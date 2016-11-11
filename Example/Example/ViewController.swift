@@ -25,7 +25,7 @@ private struct MenuOptions: MenuViewConfigurable {
     }
 
     var height: CGFloat {
-        return 66
+        return 33
     }
 
     var menuPosition: MenuPosition {
@@ -56,16 +56,25 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
         // Do any additional setup after loading the view, typically from a nib.
-        let colors: [UIColor] = [.green, .gray, .red, .blue]
-        let pageTabController = PageTabViewController(viewControllers: colors.map({
+        let colors: [UIColor] = [.green, .gray, .red, .blue, .lightGray]
+        let titles: [UIColor:String] = [
+            .green: "Green",
+            .gray: "Gray",
+            .red: "Red",
+            .blue: "Blue",
+            .lightGray: "LightGray"
+        ]
+        let pageTabController = PageTabViewController(pageItems: colors.map({
             let vc = UIViewController()
             vc.view.backgroundColor = $0
-            return vc
+            return (viewController: vc, menuTitle: titles[$0]!)
         }), options: PagingTabOptions())
+        let navController = UINavigationController(rootViewController: pageTabController)
+        navController.title = "テスト"
 
-        addChildViewController(pageTabController)
-        view.addSubview(pageTabController.view)
-        pageTabController.didMove(toParentViewController: self)
+        addChildViewController(navController)
+        view.addSubview(navController.view)
+        navController.didMove(toParentViewController: self)
     }
     
     override func didReceiveMemoryWarning() {

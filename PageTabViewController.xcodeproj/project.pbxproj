@@ -11,6 +11,8 @@
 		C5D369A51DD58F0A005D23EE /* PageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */; };
 		C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */; };
 		C5D369A91DD590C6005D23EE /* MenuViewConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */; };
+		C5D369B01DD5A73B005D23EE /* PageTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369AF1DD5A73B005D23EE /* PageTabView.swift */; };
+		C5D369B21DD5AB97005D23EE /* PageTabCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewController.swift; sourceTree = "<group>"; };
 		C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabConfigurable.swift; sourceTree = "<group>"; };
 		C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewConfigurable.swift; sourceTree = "<group>"; };
+		C5D369AF1DD5A73B005D23EE /* PageTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabView.swift; sourceTree = "<group>"; };
+		C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabCollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,8 @@
 			isa = PBXGroup;
 			children = (
 				C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */,
+				C5D369AF1DD5A73B005D23EE /* PageTabView.swift */,
+				C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */,
 				C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */,
 				C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */,
 				C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */,
@@ -145,6 +151,8 @@
 				C5D369A91DD590C6005D23EE /* MenuViewConfigurable.swift in Sources */,
 				C5D369A51DD58F0A005D23EE /* PageTabViewController.swift in Sources */,
 				C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */,
+				C5D369B21DD5AB97005D23EE /* PageTabCollectionCell.swift in Sources */,
+				C5D369B01DD5A73B005D23EE /* PageTabView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

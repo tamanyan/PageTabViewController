@@ -10,6 +10,8 @@ import UIKit
 
 open class PageTabViewController: UIViewController {
     public let controllers: [UIViewController]
+
+    public let menuTitles: [String]
     
     public internal(set) var currentViewController: UIViewController!
     
@@ -93,8 +95,9 @@ open class PageTabViewController: UIViewController {
         }
     }
     
-    public init(viewControllers: [UIViewController], options: PageTabConfigurable) {
-        self.controllers = viewControllers
+    public init(pageItems: [(viewController: UIViewController, menuTitle: String)], options: PageTabConfigurable) {
+        self.controllers = pageItems.map { $0.viewController }
+        self.menuTitles = pageItems.map { $0.menuTitle }
         self.options = options
         
         super.init(nibName: nil, bundle: nil)
@@ -108,6 +111,46 @@ open class PageTabViewController: UIViewController {
         self.constructPagingViewControllers()
         self.layoutPagingViewControllers()
         self.setCenterContentOffset()
+
+        let tabView = PageTabView(titles: self.menuTitles, options: self.menuOptions)
+        tabView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let height = NSLayoutConstraint(item: tabView,
+                                        attribute: .height,
+                                        relatedBy: .equal,
+                                        toItem: nil,
+                                        attribute: .height,
+                                        multiplier: 1.0,
+                                        constant: self.menuOptions.height)
+        
+        tabView.addConstraint(height)
+        self.view.addSubview(tabView)
+        
+        let top = NSLayoutConstraint(item: tabView,
+                                     attribute: .top,
+                                     relatedBy: .equal,
+                                     toItem: topLayoutGuide,
+                                     attribute: .bottom,
+                                     multiplier:1.0,
+                                     constant: 0.0)
+        
+        let left = NSLayoutConstraint(item: tabView,
+                                      attribute: .leading,
+                                      relatedBy: .equal,
+                                      toItem: view,
+                                      attribute: .leading,
+                                      multiplier: 1.0,
+                                      constant: 0.0)
+        
+        let right = NSLayoutConstraint(item: view,
+                                       attribute: .trailing,
+                                       relatedBy: .equal,
+                                       toItem: tabView,
+                                       attribute: .trailing,
+                                       multiplier: 1.0,
+                                       constant: 0.0)
+        
+        self.view.addConstraints([top, left, right])
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -173,9 +216,6 @@ open class PageTabViewController: UIViewController {
         }
     }
     
-    /**
-     前のページ
-     */
     func updatePage(currentPage page: Int) {
         self.currentIndex = page
     }
@@ -219,12 +259,12 @@ extension PageTabViewController: UIScrollViewDelegate {
         let minimumVisibleX = visibleBounds.minX
         let maximumVisibleX = visibleBounds.maxX
         if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {
-            self.currentIndex = self.nextPage
+            self.updatePage(currentPage: self.nextPage)
             self.constructPagingViewControllers()
             self.layoutPagingViewControllers()
             self.contentScrollView.contentOffset.x -= self.pageSize.width
         } else if self.prevPageThresholdX >= minimumVisibleX && self.isVaildPage(self.previousPage) {
-            self.currentIndex = self.previousPage
+            self.updatePage(currentPage: self.previousPage)
             self.constructPagingViewControllers()
             self.layoutPagingViewControllers()
             self.contentScrollView.contentOffset.x += self.pageSize.width
