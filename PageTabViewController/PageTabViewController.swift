@@ -12,11 +12,11 @@ open class PageTabViewController: UIViewController {
     public let controllers: [UIViewController]
 
     public let menuTitles: [String]
-    
+
     public internal(set) var currentViewController: UIViewController!
-    
+
     public fileprivate(set) var visibleControllers = [UIViewController]()
-    
+
     let contentScrollView: UIScrollView = {
         $0.isPagingEnabled = true
         $0.isDirectionalLockEnabled = true
@@ -27,9 +27,9 @@ open class PageTabViewController: UIViewController {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIScrollView(frame: .zero))
-    
+
     fileprivate let options: PageTabConfigurable
-    
+
     fileprivate var currentIndex: Int = 0
 
     /**
@@ -45,7 +45,7 @@ open class PageTabViewController: UIViewController {
     var menuOptions: MenuViewConfigurable {
         return self.options.menuOptions
     }
-    
+
     /**
      Count of all pages
      */
@@ -57,20 +57,20 @@ open class PageTabViewController: UIViewController {
      unit page size
      */
     public var pageSize: CGSize {
-        return self.view.frame.size
+        return self.contentScrollView.frame.size
     }
 
     private var centerContentOffsetX: CGFloat {
-        return CGFloat(self.numberOfVisiblePages / 2) * self.pageSize.width
+        return CGFloat(self.numberOfVisiblePages / 2) * self.contentScrollView.frame.width
     }
-    
+
     /**
      current page index
      */
     var currentPage: Int {
         return self.currentIndex
     }
-    
+
     /**
      previous page index
      */
@@ -82,7 +82,7 @@ open class PageTabViewController: UIViewController {
             return self.currentPage - 1
         }
     }
-    
+
     /**
      next page index
      */
@@ -94,27 +94,22 @@ open class PageTabViewController: UIViewController {
             return self.currentPage + 1
         }
     }
-    
+
     public init(pageItems: [(viewController: UIViewController, menuTitle: String)], options: PageTabConfigurable) {
         self.controllers = pageItems.map { $0.viewController }
         self.menuTitles = pageItems.map { $0.menuTitle }
         self.options = options
-        
+
         super.init(nibName: nil, bundle: nil)
-        
+
+        self.currentIndex = options.defaultPage
+        self.automaticallyAdjustsScrollViewInsets = false
         self.view.addSubview(self.contentScrollView)
         self.view.backgroundColor = options.backgroundColor
-        
-        self.contentScrollView.frame = self.view.frame
-        self.contentScrollView.delegate = self
-        
-        self.constructPagingViewControllers()
-        self.layoutPagingViewControllers()
-        self.setCenterContentOffset()
 
         let tabView = PageTabView(titles: self.menuTitles, options: self.menuOptions)
         tabView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let height = NSLayoutConstraint(item: tabView,
                                         attribute: .height,
                                         relatedBy: .equal,
@@ -122,10 +117,10 @@ open class PageTabViewController: UIViewController {
                                         attribute: .height,
                                         multiplier: 1.0,
                                         constant: self.menuOptions.height)
-        
+
         tabView.addConstraint(height)
         self.view.addSubview(tabView)
-        
+
         let top = NSLayoutConstraint(item: tabView,
                                      attribute: .top,
                                      relatedBy: .equal,
@@ -133,7 +128,7 @@ open class PageTabViewController: UIViewController {
                                      attribute: .bottom,
                                      multiplier:1.0,
                                      constant: 0.0)
-        
+
         let left = NSLayoutConstraint(item: tabView,
                                       attribute: .leading,
                                       relatedBy: .equal,
@@ -141,7 +136,7 @@ open class PageTabViewController: UIViewController {
                                       attribute: .leading,
                                       multiplier: 1.0,
                                       constant: 0.0)
-        
+
         let right = NSLayoutConstraint(item: view,
                                        attribute: .trailing,
                                        relatedBy: .equal,
@@ -149,14 +144,69 @@ open class PageTabViewController: UIViewController {
                                        attribute: .trailing,
                                        multiplier: 1.0,
                                        constant: 0.0)
-        
+
         self.view.addConstraints([top, left, right])
+
+        // content ScrollView
+        self.contentScrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addConstraints([
+            // top
+            NSLayoutConstraint(
+                item: self.contentScrollView,
+                attribute: .top,
+                relatedBy: .equal,
+                toItem: tabView,
+                attribute: .bottom,
+                multiplier:1.0,
+                constant: 0.0),
+            // left
+            NSLayoutConstraint(
+                item: self.contentScrollView,
+                attribute: .leading,
+                relatedBy: .equal,
+                toItem: self.view,
+                attribute: .leading,
+                multiplier: 1.0,
+                constant: 0),
+            // right
+            NSLayoutConstraint(
+                item: self.view,
+                attribute: .trailing,
+                relatedBy: .equal,
+                toItem: self.contentScrollView,
+                attribute: .trailing,
+                multiplier: 1.0,
+                constant: 0),
+            // bottom
+            NSLayoutConstraint(
+                item: self.view,
+                attribute: .bottom,
+                relatedBy: .equal,
+                toItem: self.contentScrollView,
+                attribute: .bottom,
+                multiplier: 1.0,
+                constant: 0),
+            ])
+
+        self.constructPagingViewControllers()
+        self.layoutPagingViewControllers()
+        self.contentScrollView.delegate = self
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        self.contentScrollView.contentSize = CGSize(
+            width: self.contentScrollView.frame.width * CGFloat(self.visibleControllers.count),
+            height: self.contentScrollView.frame.height)
+        print(self.contentScrollView.contentSize)
+        self.setCenterContentOffset()
+    }
+
     fileprivate func constructPagingViewControllers() {
         for (index, controller) in controllers.enumerated() {
             guard self.shouldLoad(page: index) else {
@@ -165,7 +215,7 @@ open class PageTabViewController: UIViewController {
                     controller.willMove(toParentViewController: nil)
                     controller.view!.removeFromSuperview()
                     controller.removeFromParentViewController()
-                    
+
                     let _ = visibleControllers.index(of: controller).flatMap { visibleControllers.remove(at: $0) }
                 }
                 continue
@@ -174,52 +224,129 @@ open class PageTabViewController: UIViewController {
             if self.isVisible(controller: controller) {
                 continue
             }
-            
+
             guard let pagingView = controller.view else {
                 fatalError("\(controller) doesn't have any view")
             }
-            
+
             pagingView.frame = .zero
             pagingView.translatesAutoresizingMaskIntoConstraints = false
-            
-            contentScrollView.addSubview(pagingView)
+
+            self.contentScrollView.addSubview(pagingView)
             addChildViewController(controller as UIViewController)
             controller.didMove(toParentViewController: self)
-            
-            visibleControllers.append(controller)
+
+            self.visibleControllers.append(controller)
         }
     }
-    
+
     fileprivate func layoutPagingViewControllers() {
-        self.contentScrollView.contentSize = CGSize(width: self.view.frame.width * CGFloat(self.visibleControllers.count), height: 0)
-        
+        NSLayoutConstraint.deactivate(self.contentScrollView.constraints)
+
         for (index, controller) in controllers.enumerated() {
             guard let pageView = controller.view, self.shouldLoad(page: index) else {
                 continue
             }
-            
-            let originPoint = self.contentScrollView.frame.origin
-            let pageSize = self.contentScrollView.frame.size
-            
+
             switch index {
-            case self.currentPage:
-                pageView.frame = CGRect(origin: CGPoint(x: originPoint.x + pageSize.width, y: originPoint.y), size: pageSize)
-                break
             case self.previousPage:
-                pageView.frame = CGRect(origin: CGPoint(x: originPoint.x, y: originPoint.y), size: pageSize)
+                self.contentScrollView.addConstraints([
+                    // left
+                    NSLayoutConstraint(
+                        item: pageView,
+                        attribute: .leading,
+                        relatedBy: .equal,
+                        toItem: self.contentScrollView,
+                        attribute: .leading,
+                        multiplier: 1.0,
+                        constant: 0),
+                    ])
+                break
+            case self.currentPage:
+                guard let previousPagingView = self.controllers[self.previousPage].view,
+                    let nextPagingView = self.controllers[self.nextPage].view else { continue }
+
+                self.contentScrollView.addConstraints([
+                    // left
+                    NSLayoutConstraint(
+                        item: previousPagingView,
+                        attribute: .trailing,
+                        relatedBy: .equal,
+                        toItem: pageView,
+                        attribute: .leading,
+                        multiplier: 1.0,
+                        constant: 0),
+                    // right
+                    NSLayoutConstraint(
+                        item: pageView,
+                        attribute: .trailing,
+                        relatedBy: .equal,
+                        toItem: nextPagingView,
+                        attribute: .leading,
+                        multiplier: 1.0,
+                        constant: 0),
+                    ])
                 break
             case self.nextPage:
-                pageView.frame = CGRect(origin: CGPoint(x: originPoint.x + pageSize.width * 2, y: originPoint.y), size: pageSize)
+                self.contentScrollView.addConstraints([
+                    // right
+                    NSLayoutConstraint(
+                        item: pageView,
+                        attribute: .trailing,
+                        relatedBy: .equal,
+                        toItem: self.contentScrollView,
+                        attribute: .trailing,
+                        multiplier: 1.0,
+                        constant: 0),
+                    ])
                 break
             default: break
             }
+            self.contentScrollView.addConstraints([
+                    // top
+                    NSLayoutConstraint(
+                        item: pageView,
+                        attribute: .top,
+                        relatedBy: .equal,
+                        toItem: self.contentScrollView,
+                        attribute: .top,
+                        multiplier:1.0,
+                        constant: 0.0),
+                    // bottom
+                    NSLayoutConstraint(
+                        item: self.contentScrollView,
+                        attribute: .bottom,
+                        relatedBy: .equal,
+                        toItem: pageView,
+                        attribute: .bottom,
+                        multiplier: 1.0,
+                        constant: 0),
+                    // width
+                    NSLayoutConstraint(
+                        item: pageView,
+                        attribute: .width,
+                        relatedBy: .equal,
+                        toItem: self.contentScrollView,
+                        attribute: .width,
+                        multiplier: 1.0,
+                        constant: 0),
+                    // height
+                    NSLayoutConstraint(
+                        item: pageView,
+                        attribute: .height,
+                        relatedBy: .equal,
+                        toItem: self.contentScrollView,
+                        attribute: .height,
+                        multiplier: 1.0,
+                        constant: 0),
+            ])
         }
     }
-    
+
     func updatePage(currentPage page: Int) {
         self.currentIndex = page
     }
-    
+
     func shouldLoad(page: Int) -> Bool {
         if self.currentPage == page ||
             self.previousPage == page ||
@@ -232,7 +359,7 @@ open class PageTabViewController: UIViewController {
     fileprivate func setCenterContentOffset() {
         self.contentScrollView.contentOffset = CGPoint(x: self.centerContentOffsetX, y: self.contentScrollView.contentOffset.y)
     }
-    
+
     fileprivate func isVisible(controller: UIViewController) -> Bool {
         return self.childViewControllers.contains(controller)
     }
@@ -249,13 +376,17 @@ extension PageTabViewController: UIScrollViewDelegate {
     private var nextPageThresholdX: CGFloat {
         return (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 1.5
     }
-    
+
     private var prevPageThresholdX: CGFloat {
         return (self.contentScrollView.contentSize.width / 2) - self.pageSize.width * 1.5
     }
-    
+
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let visibleBounds = self.contentScrollView.bounds
+        if visibleBounds.size.equalTo(CGSize.zero) {
+            return
+        }
+
         let minimumVisibleX = visibleBounds.minX
         let maximumVisibleX = visibleBounds.maxX
         if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {

@@ -39,7 +39,7 @@ private struct PagingTabOptions: PageTabConfigurable {
     }
     
     var defaultPage: Int {
-        return 0
+        return 1
     }
     
     var backgroundColor: UIColor {
@@ -56,21 +56,21 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
         // Do any additional setup after loading the view, typically from a nib.
-        let colors: [UIColor] = [.green, .gray, .red, .blue, .lightGray]
+        let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow]
         let titles: [UIColor:String] = [
-            .green: "Green",
-            .gray: "Gray",
-            .red: "Red",
-            .blue: "Blue",
-            .lightGray: "LightGray"
+            .green: "Green Menu",
+            .gray: "Gray Menu",
+            .red: "Red Menu",
+            .blue: "Blue Menu",
+            .yellow: "Yellow Menu"
         ]
         let pageTabController = PageTabViewController(pageItems: colors.map({
             let vc = UIViewController()
             vc.view.backgroundColor = $0
             return (viewController: vc, menuTitle: titles[$0]!)
         }), options: PagingTabOptions())
+        pageTabController.navigationItem.title = "PageTab Test"
         let navController = UINavigationController(rootViewController: pageTabController)
-        navController.title = "テスト"
 
         addChildViewController(navController)
         view.addSubview(navController.view)

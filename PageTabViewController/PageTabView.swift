@@ -11,13 +11,13 @@ import UIKit
 class PageTabView: UIView {
     fileprivate var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 65, height: 33)
         layout.sectionInset = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 3)
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.register(PageTabCollectionCell.self, forCellWithReuseIdentifier: PageTabCollectionCell.cellIdentifier)
         collectionView.scrollsToTop = false
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
@@ -39,7 +39,7 @@ class PageTabView: UIView {
         case .fixed(let width):
             return width
         case .flexible:
-            return 100
+            return 0
         }
     }
 
@@ -50,6 +50,7 @@ class PageTabView: UIView {
 
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
+        self.collectionView.backgroundColor = .white
         self.addSubview(self.collectionView)
         let top = NSLayoutConstraint(item: self.collectionView,
             attribute: .top,
@@ -87,6 +88,11 @@ class PageTabView: UIView {
         self.addConstraints([top, left, bottom, right])
     }
 
+    func getTitle(byIndex index: Int) -> String {
+        let index = index % self.titles.count
+        return self.titles[index]
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -104,9 +110,24 @@ extension PageTabView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PageTabCollectionCell.cellIdentifier, for: indexPath) as! PageTabCollectionCell
-        let index = indexPath.row % self.titles.count
-        cell.titleLabel.text = self.titles[index]
+        cell.titleLabel.text = self.getTitle(byIndex: indexPath.row)
+        cell.titleLabel.frame = CGRect(origin: CGPoint.zero, size: cell.frame.size)
         return cell
+    }
+}
+
+extension PageTabView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = self.menuItemWidth
+        if width <= 0 {
+            let title = self.getTitle(byIndex: indexPath.row) as NSString
+            let size = title.size(attributes: [
+                NSFontAttributeName: PageTabCollectionCell.cellFont
+            ])
+            return CGSize(width: size.width + 10, height: self.options.height)
+        } else {
+            return CGSize(width: width, height: self.options.height)
+        }
     }
 }
 
