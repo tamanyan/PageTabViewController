@@ -11,7 +11,7 @@ import UIKit
 class PageTabView: UIView {
     fileprivate var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 3)
+        layout.sectionInset = UIEdgeInsets.zero
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.register(PageTabCollectionCell.self, forCellWithReuseIdentifier: PageTabCollectionCell.cellIdentifier)
@@ -48,9 +48,10 @@ class PageTabView: UIView {
         self.options = options
         super.init(frame: CGRect.zero)
 
+        self.backgroundColor = options.backgroundColor
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        self.collectionView.backgroundColor = .white
+        self.collectionView.backgroundColor = options.backgroundColor
         self.addSubview(self.collectionView)
         let top = NSLayoutConstraint(item: self.collectionView,
             attribute: .top,
@@ -112,6 +113,10 @@ extension PageTabView: UICollectionViewDataSource {
             withReuseIdentifier: PageTabCollectionCell.cellIdentifier, for: indexPath) as! PageTabCollectionCell
         cell.titleLabel.text = self.getTitle(byIndex: indexPath.row)
         cell.titleLabel.frame = CGRect(origin: CGPoint.zero, size: cell.frame.size)
+        cell.backgroundColor = self.options.backgroundColor
+        cell.contentView.backgroundColor = self.options.backgroundColor
+        cell.titleLabel.backgroundColor = self.options.backgroundColor
+        cell.titleLabel.textColor = self.options.textColor
         return cell
     }
 }

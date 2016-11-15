@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol MenuViewConfigurable {
+    var textColor: UIColor { get }
     var backgroundColor: UIColor { get }
     var selectedBackgroundColor: UIColor { get }
     var height: CGFloat { get }

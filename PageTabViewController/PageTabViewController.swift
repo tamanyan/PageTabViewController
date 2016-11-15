@@ -130,7 +130,6 @@ open class PageTabViewController: UIViewController {
         self.contentScrollView.contentSize = CGSize(
             width: self.contentScrollView.frame.width * CGFloat(self.visibleControllers.count),
             height: self.contentScrollView.frame.height)
-        print(self.contentScrollView.contentSize)
         self.setCenterContentOffset()
     }
 
