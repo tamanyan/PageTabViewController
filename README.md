@@ -8,5 +8,5 @@ Paging view controller with tab in Swift
 
 ## Requirements
 
-- iOS 8.0
+- iOS 8.0+
 - Swift 3

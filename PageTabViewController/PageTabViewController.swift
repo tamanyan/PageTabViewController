@@ -28,6 +28,8 @@ open class PageTabViewController: UIViewController {
         return $0
     }(UIScrollView(frame: .zero))
 
+    fileprivate let pageTabView: PageTabView
+
     fileprivate let options: PageTabConfigurable
 
     fileprivate var currentIndex: Int = 0
@@ -99,55 +101,40 @@ open class PageTabViewController: UIViewController {
         self.controllers = pageItems.map { $0.viewController }
         self.menuTitles = pageItems.map { $0.menuTitle }
         self.options = options
+        self.pageTabView = PageTabView(titles: self.menuTitles, options: self.options.menuOptions)
+        self.currentIndex = options.defaultPage
 
         super.init(nibName: nil, bundle: nil)
 
-        self.currentIndex = options.defaultPage
         self.automaticallyAdjustsScrollViewInsets = false
-        self.view.addSubview(self.contentScrollView)
         self.view.backgroundColor = options.backgroundColor
+        self.view.addSubview(self.contentScrollView)
+        self.view.addSubview(self.pageTabView)
 
-        let tabView = PageTabView(titles: self.menuTitles, options: self.menuOptions)
-        tabView.translatesAutoresizingMaskIntoConstraints = false
+        // set layout of TabMenu and Content ScrollView
+        self.layoutTabMenuView()
+        self.layoutContentScrollView()
 
-        let height = NSLayoutConstraint(item: tabView,
-                                        attribute: .height,
-                                        relatedBy: .equal,
-                                        toItem: nil,
-                                        attribute: .height,
-                                        multiplier: 1.0,
-                                        constant: self.menuOptions.height)
+        self.constructPagingViewControllers()
+        self.layoutPagingViewControllers()
+        self.contentScrollView.delegate = self
+    }
 
-        tabView.addConstraint(height)
-        self.view.addSubview(tabView)
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-        let top = NSLayoutConstraint(item: tabView,
-                                     attribute: .top,
-                                     relatedBy: .equal,
-                                     toItem: topLayoutGuide,
-                                     attribute: .bottom,
-                                     multiplier:1.0,
-                                     constant: 0.0)
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
-        let left = NSLayoutConstraint(item: tabView,
-                                      attribute: .leading,
-                                      relatedBy: .equal,
-                                      toItem: view,
-                                      attribute: .leading,
-                                      multiplier: 1.0,
-                                      constant: 0.0)
+        self.contentScrollView.contentSize = CGSize(
+            width: self.contentScrollView.frame.width * CGFloat(self.visibleControllers.count),
+            height: self.contentScrollView.frame.height)
+        print(self.contentScrollView.contentSize)
+        self.setCenterContentOffset()
+    }
 
-        let right = NSLayoutConstraint(item: view,
-                                       attribute: .trailing,
-                                       relatedBy: .equal,
-                                       toItem: tabView,
-                                       attribute: .trailing,
-                                       multiplier: 1.0,
-                                       constant: 0.0)
-
-        self.view.addConstraints([top, left, right])
-
-        // content ScrollView
+    fileprivate func layoutContentScrollView() {
         self.contentScrollView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addConstraints([
             // top
@@ -155,7 +142,7 @@ open class PageTabViewController: UIViewController {
                 item: self.contentScrollView,
                 attribute: .top,
                 relatedBy: .equal,
-                toItem: tabView,
+                toItem: self.pageTabView,
                 attribute: .bottom,
                 multiplier:1.0,
                 constant: 0.0),
@@ -187,24 +174,41 @@ open class PageTabViewController: UIViewController {
                 multiplier: 1.0,
                 constant: 0),
             ])
-
-        self.constructPagingViewControllers()
-        self.layoutPagingViewControllers()
-        self.contentScrollView.delegate = self
     }
 
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    fileprivate func layoutTabMenuView() {
+        self.pageTabView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addConstraints([
+            NSLayoutConstraint(item: self.pageTabView,
+                               attribute: .height,
+                               relatedBy: .equal,
+                               toItem: nil,
+                               attribute: .height,
+                               multiplier: 1.0,
+                               constant: self.menuOptions.height),
+            NSLayoutConstraint(item: self.pageTabView,
+                               attribute: .top,
+                               relatedBy: .equal,
+                               toItem: topLayoutGuide,
+                               attribute: .bottom,
+                               multiplier:1.0,
+                               constant: 0.0),
+            NSLayoutConstraint(item: self.pageTabView,
+                               attribute: .leading,
+                               relatedBy: .equal,
+                               toItem: view,
+                               attribute: .leading,
+                               multiplier: 1.0,
+                               constant: 0.0),
+            NSLayoutConstraint(item: view,
+                               attribute: .trailing,
+                               relatedBy: .equal,
+                               toItem: self.pageTabView,
+                               attribute: .trailing,
+                               multiplier: 1.0,
+                               constant: 0.0),
+            ])
 
-    override open func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        self.contentScrollView.contentSize = CGSize(
-            width: self.contentScrollView.frame.width * CGFloat(self.visibleControllers.count),
-            height: self.contentScrollView.frame.height)
-        print(self.contentScrollView.contentSize)
-        self.setCenterContentOffset()
     }
 
     fileprivate func constructPagingViewControllers() {
