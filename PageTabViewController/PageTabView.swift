@@ -11,7 +11,7 @@ import UIKit
 class PageTabView: UIView {
     fileprivate var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets.zero
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.register(PageTabCollectionCell.self, forCellWithReuseIdentifier: PageTabCollectionCell.cellIdentifier)
@@ -25,6 +25,8 @@ class PageTabView: UIView {
     fileprivate let titles: [String]
 
     let options: MenuViewConfigurable
+
+    var currentIndex: Int
 
     var menuItemWidth: CGFloat {
         let mode: MenuItemWidthMode = { [unowned self] in
@@ -43,7 +45,8 @@ class PageTabView: UIView {
         }
     }
 
-    init(titles: [String], options: MenuViewConfigurable) {
+    init(currentIndex: Int, titles: [String], options: MenuViewConfigurable) {
+        self.currentIndex = currentIndex
         self.titles = titles
         self.options = options
         super.init(frame: CGRect.zero)
@@ -87,11 +90,55 @@ class PageTabView: UIView {
 
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints([top, left, bottom, right])
+        DispatchQueue.main.async { [unowned self] in
+            self.moveTo(page: self.currentIndex)
+        }
     }
 
-    func getTitle(byIndex index: Int) -> String {
+    fileprivate func getTitle(byIndex index: Int) -> String {
         let index = index % self.titles.count
         return self.titles[index]
+    }
+
+    fileprivate func isEqualIndex(_ index: Int, indexPath: IndexPath) -> Bool {
+        return index == indexPath.row % self.titles.count ? true : false
+    }
+
+    func moveTo(page: Int) {
+        self.currentIndex = page
+        /**
+         move to the closest item
+         */
+        let sortedVisibleItem = self.collectionView.indexPathsForVisibleItems.sorted()
+        let visibleItemCount = sortedVisibleItem.count
+        let centeredItem = sortedVisibleItem[visibleItemCount % 2 == 0 ? visibleItemCount/2 : visibleItemCount/2 - 1]
+
+        for indexPath in sortedVisibleItem {
+            self.collectionView.deselectItem(at: indexPath, animated: false)
+            self.collectionView(self.collectionView, didDeselectItemAt: indexPath)
+        }
+
+        if self.isEqualIndex(page, indexPath: centeredItem) {
+            self.collectionView.selectItem(at: centeredItem, animated: true, scrollPosition: .centeredHorizontally)
+            self.collectionView(self.collectionView, didSelectItemAt: centeredItem)
+            return
+        }
+
+        for i in 0..<(self.dummyCount/2 - 1) {
+            let nextIndexPath = IndexPath(row: centeredItem.row + i, section: 0)
+            if self.isEqualIndex(page, indexPath: nextIndexPath) {
+                self.collectionView.selectItem(at: nextIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+                self.collectionView(self.collectionView, didSelectItemAt: nextIndexPath)
+                return
+            }
+
+            let prevIndexPath = IndexPath(row: centeredItem.row - i, section: 0)
+            if self.isEqualIndex(page, indexPath: prevIndexPath) {
+                self.collectionView.selectItem(at: prevIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+                self.collectionView(self.collectionView, didSelectItemAt: prevIndexPath)
+                return
+            }
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -111,12 +158,19 @@ extension PageTabView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PageTabCollectionCell.cellIdentifier, for: indexPath) as! PageTabCollectionCell
+
+        cell.contentView.backgroundColor = .clear
         cell.titleLabel.text = self.getTitle(byIndex: indexPath.row)
         cell.titleLabel.frame = CGRect(origin: CGPoint.zero, size: cell.frame.size)
-        cell.backgroundColor = self.options.backgroundColor
-        cell.contentView.backgroundColor = self.options.backgroundColor
-        cell.titleLabel.backgroundColor = self.options.backgroundColor
+        cell.titleLabel.backgroundColor = .clear
         cell.titleLabel.textColor = self.options.textColor
+
+        if self.isEqualIndex(self.currentIndex, indexPath: indexPath) {
+            cell.backgroundColor = self.options.selectedBackgroundColor
+        } else {
+            cell.backgroundColor = self.options.backgroundColor
+        }
+
         return cell
     }
 }
@@ -143,5 +197,15 @@ extension PageTabView: UICollectionViewDelegate {
         if (scrollView.contentOffset.x <= 0.0) || (scrollView.contentOffset.x > pageTabItemsWidth * 2.0) {
             scrollView.contentOffset.x = pageTabItemsWidth
         }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor = self.options.selectedBackgroundColor
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor = self.options.backgroundColor
     }
 }

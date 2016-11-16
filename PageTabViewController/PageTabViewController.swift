@@ -32,7 +32,11 @@ open class PageTabViewController: UIViewController {
 
     fileprivate let options: PageTabConfigurable
 
-    fileprivate var currentIndex: Int = 0
+    fileprivate var currentIndex: Int = 0 {
+        didSet {
+            self.pageTabView.moveTo(page: self.currentIndex)
+        }
+    }
 
     /**
      number of valid page
@@ -101,8 +105,8 @@ open class PageTabViewController: UIViewController {
         self.controllers = pageItems.map { $0.viewController }
         self.menuTitles = pageItems.map { $0.menuTitle }
         self.options = options
-        self.pageTabView = PageTabView(titles: self.menuTitles, options: self.options.menuOptions)
         self.currentIndex = options.defaultPage
+        self.pageTabView = PageTabView(currentIndex: self.currentIndex, titles: self.menuTitles, options: self.options.menuOptions)
 
         super.init(nibName: nil, bundle: nil)
 

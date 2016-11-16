@@ -25,11 +25,11 @@ private struct MenuOptions: MenuViewConfigurable {
     }
 
     var selectedBackgroundColor: UIColor {
-        return .white
+        return UIColor(red: 4/255.0, green: 25/255.0, blue: 38/255.0, alpha: 1)
     }
 
     var height: CGFloat {
-        return 33
+        return 44
     }
 
     var menuPosition: MenuPosition {
@@ -85,24 +85,25 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
-        // Do any additional setup after loading the view, typically from a nib.
-        let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow]
+        let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
         let titles: [UIColor:String] = [
-            .green: "Green Menu",
-            .gray: "Gray Menu",
-            .red: "Red Menu",
-            .blue: "Blue Menu",
-            .yellow: "Yellow Menu"
+            .green: "1st Green Menu",
+            .gray: "2nd Gray Menu",
+            .red: "3rd Red Menu",
+            .blue: "4th Blue Menu",
+            .yellow: "5th Yellow Menu",
+            .lightGray: "6th LightGray Menu",
         ]
         let items: [UIColor:[String]] = [
-            .green: ["Apple", "Apricot", "Avocado", "Banana", "Blackberry", "Blueberry", "Cantaloupe", "Cherry", "Cherimoya"],
-            .gray: ["Clementine", "Coconut", "Cranberry", "Cucumber", "Custard apple", "Damson", "Date", "Dragonfruit", "Durian",
+            .green: ["1st", "Apple", "Apricot", "Avocado", "Banana", "Blackberry", "Blueberry", "Cantaloupe", "Cherry", "Cherimoya"],
+            .gray: ["2nd", "Clementine", "Coconut", "Cranberry", "Cucumber", "Custard apple", "Damson", "Date", "Dragonfruit", "Durian",
                     "Elderberry", "Feijoa", "Fig", "Grape", "Grapefruit", "Guava", "Udara", "Honeyberry", "Huckleberry", "Jabuticaba",
                     "Jackfruit", "Juniper berry", "Kiwi fruit", "Lemon", "Lime", "Lychee", "Mandarine",],
-            .red: ["Mango", "Marionberry"],
-            .blue: ["Melon", "Nance", "Nectarine", "Olive", "Orange", "Papaya", "Peach"],
-            .yellow: ["Pear", "Pineapple", "Raspberry", "Strawberry", "Tamarillo", "Tamarind", "Tomato",
+            .red: ["3rd", "Mango", "Marionberry"],
+            .blue: ["4th", "Melon", "Nance", "Nectarine", "Olive", "Orange", "Papaya", "Peach"],
+            .yellow: ["5th", "Pear", "Pineapple", "Raspberry", "Strawberry", "Tamarillo", "Tamarind", "Tomato",
                       "Ugli fruit", "Yuzu"],
+            .lightGray: ["6th"],
         ]
         let pageTabController = PageTabViewController(pageItems: colors.map({
             let vc = FruitsTableViewController()
