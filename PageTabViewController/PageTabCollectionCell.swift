@@ -9,14 +9,11 @@
 import UIKit
 
 class PageTabCollectionCell: UICollectionViewCell {
-    static let cellFont = UIFont.systemFont(ofSize: 13)
-
     static let cellIdentifier = "PageTabCollectionCell"
 
     var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = PageTabCollectionCell.cellFont
         return label
     }()
 

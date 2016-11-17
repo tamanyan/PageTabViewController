@@ -132,7 +132,7 @@ open class PageTabViewController: UIViewController {
         self.contentScrollView.delegate = self
 
         self.pageTabView.menuSelectedBlock = { [unowned self] (prevPage: Int, nextPage: Int) in
-            if case .standard(let _) = self.menuOptions.displayMode {
+            if case .standard(_) = self.menuOptions.displayMode {
                 if nextPage == self.lastPage {
                     self.updatePage(currentPage: nextPage - 1)
                 } else if nextPage == self.firstPage {
@@ -431,7 +431,7 @@ extension PageTabViewController: UIScrollViewDelegate {
 
         let minimumVisibleX = visibleBounds.minX
         let maximumVisibleX = visibleBounds.maxX
-        if case .standard(let _) = self.menuOptions.displayMode {
+        if case .standard(_) = self.menuOptions.displayMode {
             if self.lastPage == self.currentPage &&
                 maximumVisibleX <= (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 0.5 {
 

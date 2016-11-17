@@ -10,6 +10,7 @@ import Foundation
 
 public protocol MenuViewConfigurable {
     var textColor: UIColor { get }
+    var textFont: UIFont { get }
     var backgroundColor: UIColor { get }
     var selectedBackgroundColor: UIColor { get }
     var height: CGFloat { get }
@@ -33,6 +34,14 @@ public enum MenuPosition {
 }
 
 extension MenuViewConfigurable {
+    var textColor: UIColor {
+        return .black
+    }
+
+    var textFont: UIFont {
+        return UIFont.systemFont(ofSize: 13)
+    }
+
     var backgroundColor: UIColor {
         return .white
     }

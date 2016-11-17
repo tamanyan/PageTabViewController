@@ -109,7 +109,7 @@ class PageTabView: UIView {
     }
 
     fileprivate func isEqualIndex(_ index: Int, indexPath: IndexPath) -> Bool {
-        if case .infinite(let _) = self.options.displayMode {
+        if case .infinite(_) = self.options.displayMode {
             return index == indexPath.row % self.titles.count ? true : false
         } else {
             return index == indexPath.row
@@ -131,7 +131,6 @@ class PageTabView: UIView {
 
         for indexPath in sortedVisibleItem {
             self.collectionView.deselectItem(at: indexPath, animated: false)
-            self.collectionView(self.collectionView, didDeselectItemAt: indexPath)
         }
 
         if self.isEqualIndex(page, indexPath: centeredItem) {
@@ -196,7 +195,7 @@ class PageTabView: UIView {
 
 extension PageTabView: UICollectionViewDataSource {
     fileprivate var dummyCount: Int {
-        if case .infinite(let _) = self.options.displayMode {
+        if case .infinite(_) = self.options.displayMode {
             // dummy count
             return self.titles.count * 3
         } else {
@@ -217,6 +216,7 @@ extension PageTabView: UICollectionViewDataSource {
         cell.titleLabel.frame = CGRect(origin: CGPoint.zero, size: cell.frame.size)
         cell.titleLabel.backgroundColor = .clear
         cell.titleLabel.textColor = self.options.textColor
+        cell.titleLabel.font = self.options.textFont
         cell.backgroundColor = .clear
 
         return cell
@@ -229,7 +229,7 @@ extension PageTabView: UICollectionViewDelegateFlowLayout {
         if width <= 0 {
             let title = self.getTitle(byIndex: indexPath.row) as NSString
             let size = title.size(attributes: [
-                NSFontAttributeName: PageTabCollectionCell.cellFont
+                NSFontAttributeName: self.options.textFont
             ])
             return CGSize(width: size.width + 10, height: self.options.height)
         } else {
@@ -252,7 +252,7 @@ extension PageTabView: UICollectionViewDelegateFlowLayout {
 
 extension PageTabView: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard case .infinite(let _) = self.options.displayMode else {
+        guard case .infinite(_) = self.options.displayMode else {
             return
         }
 
@@ -265,10 +265,6 @@ extension PageTabView: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.menuSelectedBlock?(self.currentIndex, self.toPage(indexPath: indexPath))
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
