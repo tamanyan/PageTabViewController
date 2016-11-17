@@ -114,7 +114,7 @@ open class PageTabViewController: UIViewController {
         self.menuTitles = pageItems.map { $0.menuTitle }
         self.options = options
         self.currentIndex = options.defaultPage
-        self.pageTabView = PageTabView(currentIndex: self.currentIndex, titles: self.menuTitles, options: self.options.menuOptions)
+        self.pageTabView = PageTabView(titles: self.menuTitles, options: self.options.menuOptions)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -127,34 +127,11 @@ open class PageTabViewController: UIViewController {
         self.layoutTabMenuView()
         self.layoutContentScrollView()
 
-        self.constructPagingViewControllers()
-        self.layoutPagingViewControllers()
+        self.setPageView(page: self.currentPage)
         self.contentScrollView.delegate = self
 
         self.pageTabView.menuSelectedBlock = { [unowned self] (prevPage: Int, nextPage: Int) in
-            if case .standard(_) = self.menuOptions.displayMode {
-                if nextPage == self.lastPage {
-                    self.updatePage(currentPage: nextPage - 1)
-                } else if nextPage == self.firstPage {
-                    self.updatePage(currentPage: nextPage + 1)
-                } else {
-                    self.updatePage(currentPage: nextPage)
-                }
-
-                self.constructPagingViewControllers()
-                self.layoutPagingViewControllers()
-                self.setCenterContentOffset()
-
-                if nextPage == self.lastPage {
-                    self.contentScrollView.contentOffset.x += self.pageSize.width
-                } else if nextPage == self.firstPage {
-                    self.contentScrollView.contentOffset.x -= self.pageSize.width
-                }
-            } else {
-                self.updatePage(currentPage: nextPage)
-                self.constructPagingViewControllers()
-                self.layoutPagingViewControllers()
-            }
+            self.setPageView(page: nextPage)
         }
     }
 
@@ -168,7 +145,50 @@ open class PageTabViewController: UIViewController {
         self.contentScrollView.contentSize = CGSize(
             width: self.contentScrollView.frame.width * CGFloat(self.visibleControllers.count),
             height: self.contentScrollView.frame.height)
-        self.setCenterContentOffset()
+        if case .standard(_) = self.menuOptions.displayMode {
+            if self.currentPage == self.lastPage {
+                self.contentScrollView.contentOffset.x = self.pageSize.width * 2
+            } else if self.currentPage == self.firstPage {
+                self.contentScrollView.contentOffset.x = 0
+            } else {
+                self.setCenterContentOffset()
+            }
+        } else {
+            self.setCenterContentOffset()
+        }
+        self.pageTabView.moveTo(page: self.currentPage)
+    }
+
+    fileprivate func setPageView(page: Int) {
+        if case .standard(_) = self.menuOptions.displayMode {
+            if page == self.lastPage {
+                self.updatePage(currentPage: page - 1)
+            } else if page == self.firstPage {
+                self.updatePage(currentPage: page + 1)
+            } else {
+                self.updatePage(currentPage: page)
+            }
+
+            self.constructPagingViewControllers()
+            self.layoutPagingViewControllers()
+            self.setCenterContentOffset()
+
+            if page == self.lastPage {
+                self.contentScrollView.delegate = nil
+                self.contentScrollView.contentOffset.x += self.pageSize.width
+                self.updatePage(currentPage: page)
+                self.contentScrollView.delegate = self
+            } else if page == self.firstPage {
+                self.contentScrollView.delegate = nil
+                self.contentScrollView.contentOffset.x -= self.pageSize.width
+                self.updatePage(currentPage: page)
+                self.contentScrollView.delegate = self
+            }
+        } else {
+            self.updatePage(currentPage: page)
+            self.constructPagingViewControllers()
+            self.layoutPagingViewControllers()
+        }
     }
 
     fileprivate func layoutContentScrollView() {
@@ -386,7 +406,6 @@ open class PageTabViewController: UIViewController {
 
     func updatePage(currentPage page: Int) {
         self.currentIndex = page
-        print("currentPage: \(page)")
     }
 
     func shouldLoad(page: Int) -> Bool {

@@ -30,7 +30,7 @@ class PageTabView: UIView {
 
     let options: MenuViewConfigurable
 
-    var currentIndex: Int
+    var currentIndex: Int = 0
 
     var menuSelectedBlock: ((_ prevPage: Int, _ nextPage: Int) -> Void)?
 
@@ -51,8 +51,7 @@ class PageTabView: UIView {
         }
     }
 
-    init(currentIndex: Int, titles: [String], options: MenuViewConfigurable) {
-        self.currentIndex = currentIndex
+    init(titles: [String], options: MenuViewConfigurable) {
         self.titles = titles
         self.options = options
         super.init(frame: CGRect.zero)
@@ -98,9 +97,6 @@ class PageTabView: UIView {
 
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints([top, left, bottom, right])
-        DispatchQueue.main.async { [unowned self] in
-            self.moveTo(page: self.currentIndex)
-        }
     }
 
     fileprivate func getTitle(byIndex index: Int) -> String {
@@ -127,6 +123,11 @@ class PageTabView: UIView {
          */
         let sortedVisibleItem = self.collectionView.indexPathsForVisibleItems.sorted()
         let visibleItemCount = sortedVisibleItem.count
+
+        guard visibleItemCount > 0 else {
+            return
+        }
+
         let centeredItem = sortedVisibleItem[visibleItemCount % 2 == 0 ? visibleItemCount/2 : visibleItemCount/2 - 1]
 
         for indexPath in sortedVisibleItem {

@@ -13,8 +13,8 @@ import PageTabViewController
 
 private struct MenuOptions: MenuViewConfigurable {
     var displayMode: MenuDisplayMode {
-        // return .standard(widthMode: .fixed(width: UIScreen.main.bounds.width / 4))
-        return .standard(widthMode: .flexible)
+        return .standard(widthMode: .fixed(width: UIScreen.main.bounds.width / 4))
+//        return .standard(widthMode: .flexible)
     }
 
     var textColor: UIColor {
@@ -44,7 +44,7 @@ private struct PagingTabOptions: PageTabConfigurable {
     }
 
     var defaultPage: Int {
-        return 1
+        return 3
     }
 
     var backgroundColor: UIColor {
