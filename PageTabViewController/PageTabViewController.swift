@@ -101,6 +101,14 @@ open class PageTabViewController: UIViewController {
         }
     }
 
+    var lastPage: Int {
+        return self.controllers.count - 1
+    }
+
+    var firstPage: Int {
+        return 0
+    }
+
     public init(pageItems: [(viewController: UIViewController, menuTitle: String)], options: PageTabConfigurable) {
         self.controllers = pageItems.map { $0.viewController }
         self.menuTitles = pageItems.map { $0.menuTitle }
@@ -123,10 +131,30 @@ open class PageTabViewController: UIViewController {
         self.layoutPagingViewControllers()
         self.contentScrollView.delegate = self
 
-        self.pageTabView.menuSelectedBlock = { [weak self] (prevPage: Int, nextPage: Int) in
-            self?.updatePage(currentPage: nextPage)
-            self?.constructPagingViewControllers()
-            self?.layoutPagingViewControllers()
+        self.pageTabView.menuSelectedBlock = { [unowned self] (prevPage: Int, nextPage: Int) in
+            if case .standard(let _) = self.menuOptions.displayMode {
+                if nextPage == self.lastPage {
+                    self.updatePage(currentPage: nextPage - 1)
+                } else if nextPage == self.firstPage {
+                    self.updatePage(currentPage: nextPage + 1)
+                } else {
+                    self.updatePage(currentPage: nextPage)
+                }
+
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.setCenterContentOffset()
+
+                if nextPage == self.lastPage {
+                    self.contentScrollView.contentOffset.x += self.pageSize.width
+                } else if nextPage == self.firstPage {
+                    self.contentScrollView.contentOffset.x -= self.pageSize.width
+                }
+            } else {
+                self.updatePage(currentPage: nextPage)
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+            }
         }
     }
 
@@ -358,6 +386,7 @@ open class PageTabViewController: UIViewController {
 
     func updatePage(currentPage page: Int) {
         self.currentIndex = page
+        print("currentPage: \(page)")
     }
 
     func shouldLoad(page: Int) -> Bool {
@@ -402,16 +431,52 @@ extension PageTabViewController: UIScrollViewDelegate {
 
         let minimumVisibleX = visibleBounds.minX
         let maximumVisibleX = visibleBounds.maxX
-        if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {
-            self.updatePage(currentPage: self.nextPage)
-            self.constructPagingViewControllers()
-            self.layoutPagingViewControllers()
-            self.contentScrollView.contentOffset.x -= self.pageSize.width
-        } else if self.prevPageThresholdX >= minimumVisibleX && self.isVaildPage(self.previousPage) {
-            self.updatePage(currentPage: self.previousPage)
-            self.constructPagingViewControllers()
-            self.layoutPagingViewControllers()
-            self.contentScrollView.contentOffset.x += self.pageSize.width
+        if case .standard(let _) = self.menuOptions.displayMode {
+            if self.lastPage == self.currentPage &&
+                maximumVisibleX <= (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 0.5 {
+
+                self.updatePage(currentPage: self.previousPage)
+                return
+            } else if self.firstPage == self.currentPage &&
+                minimumVisibleX >= (self.contentScrollView.contentSize.width / 2) - self.pageSize.width * 0.5 {
+
+                self.updatePage(currentPage: self.nextPage)
+                return
+            }
+
+            if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {
+                self.updatePage(currentPage: self.nextPage)
+
+                guard self.isVaildPage(self.nextPage) else {
+                    return
+                }
+
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.contentOffset.x -= self.pageSize.width
+            } else if self.prevPageThresholdX >= minimumVisibleX && self.isVaildPage(self.previousPage) {
+                self.updatePage(currentPage: self.previousPage)
+
+                guard self.isVaildPage(self.previousPage) else {
+                    return
+                }
+
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.contentOffset.x += self.pageSize.width
+            }
+        } else {
+            if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {
+                self.updatePage(currentPage: self.nextPage)
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.contentOffset.x -= self.pageSize.width
+            } else if self.prevPageThresholdX >= minimumVisibleX && self.isVaildPage(self.previousPage) {
+                self.updatePage(currentPage: self.previousPage)
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.contentOffset.x += self.pageSize.width
+            }
         }
     }
 }

@@ -11,7 +11,6 @@ import UIKit
 class PageTabView: UIView {
     fileprivate var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.register(PageTabCollectionCell.self, forCellWithReuseIdentifier: PageTabCollectionCell.cellIdentifier)
@@ -40,7 +39,7 @@ class PageTabView: UIView {
             switch self.options.displayMode {
             case .infinite(let widthMode):
                 return widthMode
-            case .standard(let widthMode, centerItem: _):
+            case .standard(let widthMode):
                 return widthMode
             }
         }()
@@ -110,7 +109,11 @@ class PageTabView: UIView {
     }
 
     fileprivate func isEqualIndex(_ index: Int, indexPath: IndexPath) -> Bool {
-        return index == indexPath.row % self.titles.count ? true : false
+        if case .infinite(let _) = self.options.displayMode {
+            return index == indexPath.row % self.titles.count ? true : false
+        } else {
+            return index == indexPath.row
+        }
     }
 
     fileprivate func toPage(indexPath: IndexPath) -> Int {
@@ -139,7 +142,8 @@ class PageTabView: UIView {
             return
         }
 
-        for i in 0..<(self.dummyCount/2 - 1) {
+        let halfCount = self.dummyCount % 2 == 0 ? self.dummyCount/2 : self.dummyCount/2 - 1
+        for i in 1...halfCount {
             let nextIndexPath = IndexPath(row: centeredItem.row + i, section: 0)
             if self.isEqualIndex(page, indexPath: nextIndexPath) {
                 self.collectionView.selectItem(at: nextIndexPath, animated: true, scrollPosition: .centeredHorizontally)
@@ -192,7 +196,12 @@ class PageTabView: UIView {
 
 extension PageTabView: UICollectionViewDataSource {
     fileprivate var dummyCount: Int {
-        return self.titles.count * 3
+        if case .infinite(let _) = self.options.displayMode {
+            // dummy count
+            return self.titles.count * 3
+        } else {
+            return self.titles.count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -227,10 +236,26 @@ extension PageTabView: UICollectionViewDelegateFlowLayout {
             return CGSize(width: width, height: self.options.height)
         }
     }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
 }
 
 extension PageTabView: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard case .infinite(let _) = self.options.displayMode else {
+            return
+        }
+
         let pageTabItemsWidth = floor(scrollView.contentSize.width / 3.0)
 
         if (scrollView.contentOffset.x <= 0.0) || (scrollView.contentOffset.x > pageTabItemsWidth * 2.0) {

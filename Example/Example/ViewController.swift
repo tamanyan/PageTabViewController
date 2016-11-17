@@ -13,7 +13,8 @@ import PageTabViewController
 
 private struct MenuOptions: MenuViewConfigurable {
     var displayMode: MenuDisplayMode {
-        return .infinite(widthMode: .flexible)
+        // return .standard(widthMode: .fixed(width: UIScreen.main.bounds.width / 4))
+        return .standard(widthMode: .flexible)
     }
 
     var textColor: UIColor {
@@ -85,7 +86,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
-        let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
+        // let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
+        let colors: [UIColor] = [.green, .gray, .red, .blue]
         let titles: [UIColor:String] = [
             .green: "1st Green Menu",
             .gray: "2nd Gray Menu",

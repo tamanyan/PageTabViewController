@@ -23,7 +23,7 @@ public enum MenuItemWidthMode {
 }
 
 public enum MenuDisplayMode {
-    case standard(widthMode: MenuItemWidthMode, centerItem: Bool)
+    case standard(widthMode: MenuItemWidthMode)
     case infinite(widthMode: MenuItemWidthMode)
 }
 
@@ -46,7 +46,7 @@ extension MenuViewConfigurable {
     }
 
     var displayMode: MenuDisplayMode {
-        return .standard(widthMode: .fixed(width: 30), centerItem: true)
+        return .standard(widthMode: .fixed(width: 30))
     }
 
     var menuPosition: MenuPosition {
