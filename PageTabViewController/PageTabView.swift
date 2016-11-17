@@ -22,11 +22,18 @@ class PageTabView: UIView {
         return collectionView
     }()
 
+    lazy fileprivate var roundRectView: UIView = {
+        $0.isUserInteractionEnabled = true
+        return $0
+    }(UIView(frame: .zero))
+
     fileprivate let titles: [String]
 
     let options: MenuViewConfigurable
 
     var currentIndex: Int
+
+    var menuSelectedBlock: ((_ prevPage: Int, _ nextPage: Int) -> Void)?
 
     var menuItemWidth: CGFloat {
         let mode: MenuItemWidthMode = { [unowned self] in
@@ -56,6 +63,8 @@ class PageTabView: UIView {
         self.collectionView.dataSource = self
         self.collectionView.backgroundColor = options.backgroundColor
         self.addSubview(self.collectionView)
+        self.setupRoundRectView()
+
         let top = NSLayoutConstraint(item: self.collectionView,
             attribute: .top,
             relatedBy: .equal,
@@ -104,6 +113,10 @@ class PageTabView: UIView {
         return index == indexPath.row % self.titles.count ? true : false
     }
 
+    fileprivate func toPage(indexPath: IndexPath) -> Int {
+        return indexPath.row % self.titles.count
+    }
+
     func moveTo(page: Int) {
         self.currentIndex = page
         /**
@@ -120,7 +133,9 @@ class PageTabView: UIView {
 
         if self.isEqualIndex(page, indexPath: centeredItem) {
             self.collectionView.selectItem(at: centeredItem, animated: true, scrollPosition: .centeredHorizontally)
-            self.collectionView(self.collectionView, didSelectItemAt: centeredItem)
+            if let cell = self.collectionView.cellForItem(at: centeredItem) {
+                self.moveRoundRectView(target: cell)
+            }
             return
         }
 
@@ -128,19 +143,48 @@ class PageTabView: UIView {
             let nextIndexPath = IndexPath(row: centeredItem.row + i, section: 0)
             if self.isEqualIndex(page, indexPath: nextIndexPath) {
                 self.collectionView.selectItem(at: nextIndexPath, animated: true, scrollPosition: .centeredHorizontally)
-                self.collectionView(self.collectionView, didSelectItemAt: nextIndexPath)
+                if let cell = self.collectionView.cellForItem(at: nextIndexPath) {
+                    self.moveRoundRectView(target: cell)
+                }
                 return
             }
 
             let prevIndexPath = IndexPath(row: centeredItem.row - i, section: 0)
             if self.isEqualIndex(page, indexPath: prevIndexPath) {
                 self.collectionView.selectItem(at: prevIndexPath, animated: true, scrollPosition: .centeredHorizontally)
-                self.collectionView(self.collectionView, didSelectItemAt: prevIndexPath)
+                if let cell = self.collectionView.cellForItem(at: prevIndexPath) {
+                    self.moveRoundRectView(target: cell)
+                }
                 return
             }
         }
     }
 
+    fileprivate func setupRoundRectView() {
+        let padding: CGFloat = 5
+        self.roundRectView.frame = CGRect(
+            origin: CGPoint(x: 100, y: padding),
+            size: CGSize(width: 100, height: self.options.height - padding * 2))
+        self.roundRectView.layer.cornerRadius = 10
+        self.roundRectView.backgroundColor = self.options.selectedBackgroundColor
+        self.collectionView.addSubview(self.roundRectView)
+    }
+
+    fileprivate func moveRoundRectView(target: UIView) {
+//        UIView.animate(withDuration: 0.5) { [weak self] in
+//            guard let this = self else { return }
+//
+//            let padding: CGFloat = 5
+//            this.roundRectView.frame = CGRect(
+//                origin: CGPoint(x: target.frame.origin.x, y: padding),
+//                size: CGSize(width: target.frame.width, height: this.options.height - padding * 2))
+//        }
+        let padding: CGFloat = 5
+        self.roundRectView.frame = CGRect(
+            origin: CGPoint(x: target.frame.origin.x, y: padding),
+            size: CGSize(width: target.frame.width, height: self.options.height - padding * 2))
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -164,12 +208,7 @@ extension PageTabView: UICollectionViewDataSource {
         cell.titleLabel.frame = CGRect(origin: CGPoint.zero, size: cell.frame.size)
         cell.titleLabel.backgroundColor = .clear
         cell.titleLabel.textColor = self.options.textColor
-
-        if self.isEqualIndex(self.currentIndex, indexPath: indexPath) {
-            cell.backgroundColor = self.options.selectedBackgroundColor
-        } else {
-            cell.backgroundColor = self.options.backgroundColor
-        }
+        cell.backgroundColor = .clear
 
         return cell
     }
@@ -200,12 +239,18 @@ extension PageTabView: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = self.options.selectedBackgroundColor
+        self.menuSelectedBlock?(self.currentIndex, self.toPage(indexPath: indexPath))
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = self.options.backgroundColor
+    }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if self.isEqualIndex(self.currentIndex, indexPath: indexPath) {
+            self.moveRoundRectView(target: cell)
+        }
+
+        self.collectionView.sendSubview(toBack: self.roundRectView)
     }
 }

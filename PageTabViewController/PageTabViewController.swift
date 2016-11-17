@@ -122,6 +122,12 @@ open class PageTabViewController: UIViewController {
         self.constructPagingViewControllers()
         self.layoutPagingViewControllers()
         self.contentScrollView.delegate = self
+
+        self.pageTabView.menuSelectedBlock = { [weak self] (prevPage: Int, nextPage: Int) in
+            self?.updatePage(currentPage: nextPage)
+            self?.constructPagingViewControllers()
+            self?.layoutPagingViewControllers()
+        }
     }
 
     required public init?(coder aDecoder: NSCoder) {
