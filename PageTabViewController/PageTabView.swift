@@ -168,7 +168,7 @@ class PageTabView: UIView {
         self.roundRectView.frame = CGRect(
             origin: CGPoint(x: 100, y: padding),
             size: CGSize(width: 100, height: self.options.height - padding * 2))
-        self.roundRectView.layer.cornerRadius = 10
+        self.roundRectView.layer.cornerRadius = 5
         self.roundRectView.backgroundColor = self.options.selectedBackgroundColor
         self.collectionView.addSubview(self.roundRectView)
     }

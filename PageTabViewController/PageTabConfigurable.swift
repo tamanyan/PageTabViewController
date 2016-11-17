@@ -15,3 +15,13 @@ public protocol PageTabConfigurable {
     
     var menuOptions: MenuViewConfigurable { get }
 }
+
+public extension PageTabConfigurable {
+    var defaultPage: Int {
+        return 0
+    }
+
+    var backgoundColor: UIColor {
+        return .white
+    }
+}

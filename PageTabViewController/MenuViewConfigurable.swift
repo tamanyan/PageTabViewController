@@ -33,32 +33,32 @@ public enum MenuPosition {
     case bottom
 }
 
-extension MenuViewConfigurable {
-    var textColor: UIColor {
+public extension MenuViewConfigurable {
+    public var textColor: UIColor {
         return .black
     }
 
-    var textFont: UIFont {
+    public var textFont: UIFont {
         return UIFont.systemFont(ofSize: 13)
     }
 
-    var backgroundColor: UIColor {
+    public var backgroundColor: UIColor {
         return .white
     }
 
-    var selectedBackgroundColor: UIColor {
+    public var selectedBackgroundColor: UIColor {
         return .white
     }
 
-    var height: CGFloat {
+    public var height: CGFloat {
         return 66
     }
 
-    var displayMode: MenuDisplayMode {
+    public var displayMode: MenuDisplayMode {
         return .standard(widthMode: .fixed(width: 30))
     }
 
-    var menuPosition: MenuPosition {
+    public var menuPosition: MenuPosition {
         return .top
     }
 }
