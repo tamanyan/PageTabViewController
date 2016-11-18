@@ -21,7 +21,7 @@ public extension PageTabConfigurable {
         return 0
     }
 
-    public var backgoundColor: UIColor {
+    public var backgroundColor: UIColor {
         return .white
     }
 }

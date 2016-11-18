@@ -42,12 +42,4 @@ struct InfiniteFlexibleWidthMenuOptions: PageTabConfigurable {
     var menuOptions: MenuViewConfigurable {
         return MenuOptions()
     }
-
-    var defaultPage: Int {
-        return 0
-    }
-
-    var backgroundColor: UIColor {
-        return .white
-    }
 }

@@ -46,8 +46,4 @@ struct StandardFixedWidthMenuOptions: PageTabConfigurable {
     var defaultPage: Int {
         return 0
     }
-
-    var backgroundColor: UIColor {
-        return .white
-    }
 }
