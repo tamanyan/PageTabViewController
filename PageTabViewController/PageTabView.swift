@@ -14,7 +14,7 @@ class PageTabView: UIView {
         return $0
     }(UIView(frame: .zero))
 
-    var collectionView: UICollectionView = {
+    fileprivate var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
@@ -29,6 +29,8 @@ class PageTabView: UIView {
     fileprivate let titles: [String]
 
     let options: MenuViewConfigurable
+
+    let menuTitlePadding: CGFloat = 4
 
     var currentIndex: Int = 0
 
@@ -121,6 +123,14 @@ class PageTabView: UIView {
         return indexPath.row % self.titles.count
     }
 
+    func moveToInitialPosition() {
+        self.layoutIfNeeded()
+        if case .infinite(_) = self.options.displayMode {
+            self.collectionView.scrollToItem(at: IndexPath(row: self.titles.count * 2, section: 0), at: .centeredHorizontally, animated: false)
+            self.layoutIfNeeded()
+        }
+    }
+
     func moveTo(page: Int) {
         self.currentIndex = page
         /**
@@ -141,7 +151,7 @@ class PageTabView: UIView {
 
         if self.isEqualIndex(page, indexPath: centeredItem) {
             self.collectionView.selectItem(at: centeredItem, animated: true, scrollPosition: .centeredHorizontally)
-            if let cell = self.collectionView.cellForItem(at: centeredItem) {
+            if let cell = self.collectionView.cellForItem(at: centeredItem) as? PageTabCollectionCell {
                 self.moveRoundRectView(target: cell)
             }
             return
@@ -152,7 +162,7 @@ class PageTabView: UIView {
             let nextIndexPath = IndexPath(row: centeredItem.row + i, section: 0)
             if self.isEqualIndex(page, indexPath: nextIndexPath) {
                 self.collectionView.selectItem(at: nextIndexPath, animated: true, scrollPosition: .centeredHorizontally)
-                if let cell = self.collectionView.cellForItem(at: nextIndexPath) {
+                if let cell = self.collectionView.cellForItem(at: nextIndexPath) as? PageTabCollectionCell {
                     self.moveRoundRectView(target: cell)
                 }
                 return
@@ -161,7 +171,7 @@ class PageTabView: UIView {
             let prevIndexPath = IndexPath(row: centeredItem.row - i, section: 0)
             if self.isEqualIndex(page, indexPath: prevIndexPath) {
                 self.collectionView.selectItem(at: prevIndexPath, animated: true, scrollPosition: .centeredHorizontally)
-                if let cell = self.collectionView.cellForItem(at: prevIndexPath) {
+                if let cell = self.collectionView.cellForItem(at: prevIndexPath) as? PageTabCollectionCell {
                     self.moveRoundRectView(target: cell)
                 }
                 return
@@ -179,19 +189,11 @@ class PageTabView: UIView {
         self.collectionView.addSubview(self.roundRectView)
     }
 
-    fileprivate func moveRoundRectView(target: UIView) {
-//        UIView.animate(withDuration: 0.5) { [weak self] in
-//            guard let this = self else { return }
-//
-//            let padding: CGFloat = 5
-//            this.roundRectView.frame = CGRect(
-//                origin: CGPoint(x: target.frame.origin.x, y: padding),
-//                size: CGSize(width: target.frame.width, height: this.options.height - padding * 2))
-//        }
-        let padding: CGFloat = 5
+    fileprivate func moveRoundRectView(target: PageTabCollectionCell) {
+        let heightPadding: CGFloat = 5
         self.roundRectView.frame = CGRect(
-            origin: CGPoint(x: target.frame.origin.x, y: padding),
-            size: CGSize(width: target.frame.width, height: self.options.height - padding * 2))
+            origin: CGPoint(x: target.frame.origin.x + self.menuTitlePadding, y: heightPadding),
+            size: CGSize(width: target.titleLabel.frame.width, height: self.options.height - heightPadding * 2))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -219,7 +221,9 @@ extension PageTabView: UICollectionViewDataSource {
 
         cell.contentView.backgroundColor = .clear
         cell.titleLabel.text = self.getTitle(byIndex: indexPath.row)
-        cell.titleLabel.frame = CGRect(origin: CGPoint.zero, size: cell.frame.size)
+        cell.titleLabel.frame = CGRect(
+            origin: CGPoint(x: self.menuTitlePadding, y: 0),
+            size: CGSize(width: cell.frame.width - self.menuTitlePadding * 2, height: cell.frame.height))
         cell.titleLabel.backgroundColor = .clear
         cell.titleLabel.textColor = self.options.textColor
         cell.titleLabel.font = self.options.textFont
@@ -237,7 +241,7 @@ extension PageTabView: UICollectionViewDelegateFlowLayout {
             let size = title.size(attributes: [
                 NSFontAttributeName: self.options.textFont
             ])
-            return CGSize(width: size.width + 10, height: self.options.height)
+            return CGSize(width: size.width + 10 + self.menuTitlePadding * 2, height: self.options.height)
         } else {
             return CGSize(width: width, height: self.options.height)
         }
@@ -274,7 +278,7 @@ extension PageTabView: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if self.isEqualIndex(self.currentIndex, indexPath: indexPath) {
+        if let cell = cell as? PageTabCollectionCell, self.isEqualIndex(self.currentIndex, indexPath: indexPath) {
             self.moveRoundRectView(target: cell)
         }
 
