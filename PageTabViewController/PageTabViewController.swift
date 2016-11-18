@@ -23,7 +23,7 @@ open class PageTabViewController: UIViewController {
         $0.showsHorizontalScrollIndicator = false
         $0.showsVerticalScrollIndicator = false
         $0.scrollsToTop = false
-        $0.bounces = false
+        $0.bounces = true
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIScrollView(frame: .zero))
