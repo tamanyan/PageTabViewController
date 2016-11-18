@@ -194,6 +194,12 @@ class PageTabView: UIView {
         self.roundRectView.frame = CGRect(
             origin: CGPoint(x: target.frame.origin.x + self.menuTitlePadding, y: heightPadding),
             size: CGSize(width: target.titleLabel.frame.width, height: self.options.height - heightPadding * 2))
+        self.collectionView.visibleCells.forEach {
+            ($0 as? PageTabCollectionCell)?.titleLabel.textColor = self.options.textColor
+            ($0 as? PageTabCollectionCell)?.titleLabel.font = self.options.textFont
+        }
+        target.titleLabel.textColor = self.options.selectedTextColor
+        target.titleLabel.font = self.options.selectedTextFont
     }
     
     required init?(coder aDecoder: NSCoder) {

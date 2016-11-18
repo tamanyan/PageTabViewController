@@ -18,6 +18,10 @@ struct InfiniteFlexibleWidthMenuOptions: PageTabConfigurable {
             return .white
         }
 
+        var selectedTextColor: UIColor {
+            return .white
+        }
+
         var backgroundColor: UIColor {
             return UIColor(red: 10/255.0, green: 56/255.0, blue: 91/255.0, alpha: 1)
         }

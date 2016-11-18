@@ -17,11 +17,11 @@ public protocol PageTabConfigurable {
 }
 
 public extension PageTabConfigurable {
-    var defaultPage: Int {
+    public var defaultPage: Int {
         return 0
     }
 
-    var backgoundColor: UIColor {
+    public var backgoundColor: UIColor {
         return .white
     }
 }
