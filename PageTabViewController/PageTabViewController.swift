@@ -133,6 +133,12 @@ open class PageTabViewController: UIViewController {
         self.pageTabView.menuSelectedBlock = { [unowned self] (prevPage: Int, nextPage: Int) in
             self.setPageView(page: nextPage)
         }
+        self.pageTabView.layoutIfNeeded()
+        if case .infinite(_) = self.menuOptions.displayMode {
+            self.pageTabView.collectionView.scrollToItem(at: IndexPath(row: self.menuTitles.count * 2, section: 0), at: .centeredHorizontally, animated: false)
+            self.pageTabView.layoutIfNeeded()
+        }
+        self.pageTabView.moveTo(page: self.currentPage)
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -156,7 +162,10 @@ open class PageTabViewController: UIViewController {
         } else {
             self.setCenterContentOffset()
         }
-        self.pageTabView.moveTo(page: self.currentPage)
+    }
+
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     fileprivate func setPageView(page: Int) {

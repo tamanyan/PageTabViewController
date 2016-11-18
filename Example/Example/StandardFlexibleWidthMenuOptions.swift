@@ -40,7 +40,7 @@ struct StandardFlexibleWidthMenuOptions: PageTabConfigurable {
     }
 
     var defaultPage: Int {
-        return 0
+        return 3
     }
 
     var backgroundColor: UIColor {

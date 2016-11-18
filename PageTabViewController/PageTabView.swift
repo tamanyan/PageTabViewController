@@ -9,7 +9,12 @@
 import UIKit
 
 class PageTabView: UIView {
-    fileprivate var collectionView: UICollectionView = {
+    lazy fileprivate var roundRectView: UIView = {
+        $0.isUserInteractionEnabled = true
+        return $0
+    }(UIView(frame: .zero))
+
+    var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
@@ -20,11 +25,6 @@ class PageTabView: UIView {
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
-
-    lazy fileprivate var roundRectView: UIView = {
-        $0.isUserInteractionEnabled = true
-        return $0
-    }(UIView(frame: .zero))
 
     fileprivate let titles: [String]
 
@@ -97,6 +97,11 @@ class PageTabView: UIView {
 
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.addConstraints([top, left, bottom, right])
+    }
+
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        self.collectionView.layoutIfNeeded()
     }
 
     fileprivate func getTitle(byIndex index: Int) -> String {
@@ -198,7 +203,7 @@ extension PageTabView: UICollectionViewDataSource {
     fileprivate var dummyCount: Int {
         if case .infinite(_) = self.options.displayMode {
             // dummy count
-            return self.titles.count * 3
+            return self.titles.count * 5
         } else {
             return self.titles.count
         }
@@ -257,10 +262,10 @@ extension PageTabView: UICollectionViewDelegate {
             return
         }
 
-        let pageTabItemsWidth = floor(scrollView.contentSize.width / 3.0)
+        let pageTabItemsWidth = floor(scrollView.contentSize.width / 5.0)
 
-        if (scrollView.contentOffset.x <= 0.0) || (scrollView.contentOffset.x > pageTabItemsWidth * 2.0) {
-            scrollView.contentOffset.x = pageTabItemsWidth
+        if (scrollView.contentOffset.x <= pageTabItemsWidth) || (scrollView.contentOffset.x > pageTabItemsWidth * 4.0) {
+            scrollView.contentOffset.x = pageTabItemsWidth * 2
         }
     }
 
