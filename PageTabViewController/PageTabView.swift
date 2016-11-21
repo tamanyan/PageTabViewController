@@ -143,7 +143,7 @@ class PageTabView: UIView {
             return
         }
 
-        let centeredItem = sortedVisibleItem[visibleItemCount % 2 == 0 ? visibleItemCount/2 : visibleItemCount/2 - 1]
+        let centeredItem = sortedVisibleItem[visibleItemCount/2]
 
         for indexPath in sortedVisibleItem {
             self.collectionView.deselectItem(at: indexPath, animated: false)
@@ -157,7 +157,11 @@ class PageTabView: UIView {
             return
         }
 
-        let halfCount = self.dummyCount % 2 == 0 ? self.dummyCount/2 : self.dummyCount/2 - 1
+        let halfCount = self.dummyCount / 2
+        guard halfCount <= 0 else {
+            return
+        }
+
         for i in 1...halfCount {
             let nextIndexPath = IndexPath(row: centeredItem.row + i, section: 0)
             if self.isEqualIndex(page, indexPath: nextIndexPath) {

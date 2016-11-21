@@ -12,6 +12,8 @@ public protocol PageTabConfigurable {
     var defaultPage: Int { get }
     
     var backgroundColor: UIColor { get }
+
+    var pageBounces: Bool { get }
     
     var menuOptions: MenuViewConfigurable { get }
 }
@@ -23,5 +25,9 @@ public extension PageTabConfigurable {
 
     public var backgroundColor: UIColor {
         return .white
+    }
+
+    public var pageBounces: Bool {
+        return true
     }
 }

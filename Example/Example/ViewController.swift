@@ -93,7 +93,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
-            let colors: [UIColor] = [.green, .gray, .red, .blue]
+            let colors: [UIColor] = [.green, .gray, .red]
             let pageTabController = PageTabViewController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
                 vc.fruits = self.items[$0]!

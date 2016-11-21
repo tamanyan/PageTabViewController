@@ -11,7 +11,7 @@ import PageTabViewController
 struct StandardFixedWidthMenuOptions: PageTabConfigurable {
     struct MenuOptions: MenuViewConfigurable {
         var displayMode: MenuDisplayMode {
-            return .standard(widthMode: .fixed(width: UIScreen.main.bounds.width / 4))
+            return .standard(widthMode: .fixed(width: UIScreen.main.bounds.width / 3))
         }
 
         var textColor: UIColor {
