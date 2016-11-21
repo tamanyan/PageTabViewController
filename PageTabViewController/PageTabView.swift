@@ -158,7 +158,7 @@ class PageTabView: UIView {
         }
 
         let halfCount = self.dummyCount / 2
-        guard halfCount <= 0 else {
+        guard halfCount > 0 else {
             return
         }
 
