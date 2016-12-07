@@ -11,12 +11,22 @@ import UIKit
 import UIKit
 import PageTabViewController
 
-class FruitsTableViewController: UITableViewController {
+class FruitsTableViewController: UITableViewController, PageTabChildViewable {
     var fruits = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+    }
+
+    // MARK: - PageTabChildViewable
+
+    func pageTabViewWillShowPage() {
+        print("pageTabViewWillShowPage \(self.fruits)")
+    }
+
+    func pageTabViewWillHidePage() {
+        print("pageTabViewWillHidePage \(self.fruits)")
     }
 
     // MARK: - UITableViewDataSource

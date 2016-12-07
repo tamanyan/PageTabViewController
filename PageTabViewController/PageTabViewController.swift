@@ -38,7 +38,7 @@ open class PageTabViewController: UIViewController {
 
     fileprivate var currentIndex: Int = 0 {
         didSet {
-            self.delegate?.pageTabViewMovePage(controller: self,
+            self.delegate?.pageTabViewMovePage?(controller: self,
                                                nextPage: self.currentPage,
                                                previousPage: oldValue)
             self.pageTabView.moveTo(page: self.currentIndex)
@@ -470,12 +470,18 @@ extension PageTabViewController: UIScrollViewDelegate {
         let intersection = nowShowingPages.intersection(self.showingPages)
         for i in nowShowingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabViewWillShowPage(controller: self, page: i)
+                self.delegate?.pageTabViewWillShowPage?(controller: self, page: i)
+                if let viewable = self.controllers[i] as? PageTabChildViewable {
+                    viewable.pageTabViewWillShowPage?()
+                }
             }
         }
         for i in self.showingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabViewWillHidePage(controller: self, page: i)
+                self.delegate?.pageTabViewWillHidePage?(controller: self, page: i)
+                if let viewable = self.controllers[i] as? PageTabChildViewable {
+                    viewable.pageTabViewWillHidePage?()
+                }
             }
         }
         self.showingPages = nowShowingPages
