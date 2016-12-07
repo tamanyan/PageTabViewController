@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C51C82571DF805510075B6DC /* PageTabViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */; };
 		C5D3695D1DD58CA0005D23EE /* PageTabViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5D369A51DD58F0A005D23EE /* PageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */; };
 		C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewDelegate.swift; sourceTree = "<group>"; };
 		C5D369581DD58CA0005D23EE /* PageTabViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PageTabViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageTabViewController.h; sourceTree = "<group>"; };
 		C5D3695C1DD58CA0005D23EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */,
 				C5D369AF1DD5A73B005D23EE /* PageTabView.swift */,
 				C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */,
+				C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */,
 				C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */,
 				C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */,
 				C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */,
@@ -150,6 +153,7 @@
 			files = (
 				C5D369A91DD590C6005D23EE /* MenuViewConfigurable.swift in Sources */,
 				C5D369A51DD58F0A005D23EE /* PageTabViewController.swift in Sources */,
+				C51C82571DF805510075B6DC /* PageTabViewDelegate.swift in Sources */,
 				C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */,
 				C5D369B21DD5AB97005D23EE /* PageTabCollectionCell.swift in Sources */,
 				C5D369B01DD5A73B005D23EE /* PageTabView.swift in Sources */,

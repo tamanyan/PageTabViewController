@@ -40,7 +40,7 @@ class FruitsTableViewController: UITableViewController {
     }
 }
 
-class ViewController: UITableViewController, UIGestureRecognizerDelegate {
+class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTabViewDelegate {
     let titles = ["standard + fixwidth menu", "standard + flexible width menu", "infinite + flexible width menu"]
     let menuTitles: [UIColor:String] = [
         .green: "1st Green Menu",
@@ -100,6 +100,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate {
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
             }), options: StandardFixedWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
+            pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 1 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
@@ -109,6 +110,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate {
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
             }), options: StandardFlexibleWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
+            pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 2 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
@@ -118,12 +120,25 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate {
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
             }), options: InfiniteFlexibleWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
+            pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         }
     }
 
     func showPageTabController(_ pageTabController: PageTabViewController) {
         self.navigationController?.pushViewController(pageTabController, animated: true)
+    }
+
+    func pageTabViewMovePage(controller: PageTabViewController, nextPage: Int, previousPage: Int) {
+        print("nextPage \(nextPage), previousPage: \(previousPage)")
+    }
+
+    public func pageTabViewWillHidePage(controller: PageTabViewController, page: Int) {
+        print("hidePage \(page)")
+    }
+
+    public func pageTabViewWillShowPage(controller: PageTabViewController, page: Int) {
+        print("showPage \(page)")
     }
 }
 

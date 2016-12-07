@@ -13,6 +13,8 @@ open class PageTabViewController: UIViewController {
 
     public let menuTitles: [String]
 
+    public var delegate: PageTabViewDelegate?
+
     public internal(set) var currentViewController: UIViewController!
 
     public fileprivate(set) var visibleControllers = [UIViewController]()
@@ -28,12 +30,17 @@ open class PageTabViewController: UIViewController {
         return $0
     }(UIScrollView(frame: .zero))
 
+    fileprivate var showingPages = Set<Int>()
+
     fileprivate let pageTabView: PageTabView
 
     fileprivate let options: PageTabConfigurable
 
     fileprivate var currentIndex: Int = 0 {
         didSet {
+            self.delegate?.pageTabViewMovePage(controller: self,
+                                               nextPage: self.currentPage,
+                                               previousPage: oldValue)
             self.pageTabView.moveTo(page: self.currentIndex)
         }
     }
@@ -135,6 +142,7 @@ open class PageTabViewController: UIViewController {
         }
         self.pageTabView.moveToInitialPosition()
         self.pageTabView.moveTo(page: self.currentPage)
+        self.showingPages.insert(self.currentPage)
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -452,6 +460,25 @@ extension PageTabViewController: UIScrollViewDelegate {
         if visibleBounds.size.equalTo(CGSize.zero) {
             return
         }
+
+        var nowShowingPages = Set<Int>()
+        for (i, controller) in self.visibleControllers.enumerated() {
+            if controller.view.frame.intersects(visibleBounds) {
+                nowShowingPages.insert(i)
+            }
+        }
+        let intersection = nowShowingPages.intersection(self.showingPages)
+        for i in nowShowingPages {
+            if (intersection.contains(i) == false) {
+                self.delegate?.pageTabViewWillShowPage(controller: self, page: i)
+            }
+        }
+        for i in self.showingPages {
+            if (intersection.contains(i) == false) {
+                self.delegate?.pageTabViewWillHidePage(controller: self, page: i)
+            }
+        }
+        self.showingPages = nowShowingPages
 
         let minimumVisibleX = visibleBounds.minX
         let maximumVisibleX = visibleBounds.maxX
