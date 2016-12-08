@@ -1,5 +1,5 @@
 //
-//  PageTabChildViewable.swift
+//  PageTabChildManageable.swift
 //  PageTabViewController
 //
 //  Created by svpcadmin on 12/7/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public protocol PageTabChildViewable {
+@objc public protocol PageTabChildManageable {
     @objc optional func pageTabViewWillShowPage()
     @objc optional func pageTabViewWillHidePage()
 }

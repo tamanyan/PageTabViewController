@@ -11,7 +11,7 @@ import UIKit
 import UIKit
 import PageTabViewController
 
-class FruitsTableViewController: UITableViewController, PageTabChildViewable {
+class FruitsTableViewController: UITableViewController, PageTabChildManageable {
     var fruits = [String]()
 
     override func viewDidLoad() {
@@ -19,7 +19,7 @@ class FruitsTableViewController: UITableViewController, PageTabChildViewable {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
 
-    // MARK: - PageTabChildViewable
+    // MARK: - PageTabChildManageable
 
     func pageTabViewWillShowPage() {
         print("pageTabViewWillShowPage \(self.fruits)")

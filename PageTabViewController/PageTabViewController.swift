@@ -142,7 +142,7 @@ open class PageTabViewController: UIViewController {
         }
         self.pageTabView.moveToInitialPosition()
         self.pageTabView.moveTo(page: self.currentPage)
-        if let viewable = self.controllers[self.currentPage] as? PageTabChildViewable {
+        if let viewable = self.controllers[self.currentPage] as? PageTabChildManageable {
             viewable.pageTabViewWillShowPage?()
         }
         self.showingPages.insert(self.currentPage)
@@ -474,7 +474,7 @@ extension PageTabViewController: UIScrollViewDelegate {
         for i in nowShowingPages {
             if (intersection.contains(i) == false) {
                 self.delegate?.pageTabViewWillShowPage?(controller: self, page: i)
-                if let viewable = self.controllers[i] as? PageTabChildViewable {
+                if let viewable = self.controllers[i] as? PageTabChildManageable {
                     viewable.pageTabViewWillShowPage?()
                 }
             }
@@ -482,7 +482,7 @@ extension PageTabViewController: UIScrollViewDelegate {
         for i in self.showingPages {
             if (intersection.contains(i) == false) {
                 self.delegate?.pageTabViewWillHidePage?(controller: self, page: i)
-                if let viewable = self.controllers[i] as? PageTabChildViewable {
+                if let viewable = self.controllers[i] as? PageTabChildManageable {
                     viewable.pageTabViewWillHidePage?()
                 }
             }
