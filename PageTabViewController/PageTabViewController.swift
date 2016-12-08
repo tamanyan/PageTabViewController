@@ -462,8 +462,8 @@ extension PageTabViewController: UIScrollViewDelegate {
         }
 
         var nowShowingPages = Set<Int>()
-        for (i, controller) in self.visibleControllers.enumerated() {
-            if controller.view.frame.intersects(visibleBounds) {
+        for (i, controller) in self.controllers.enumerated() {
+            if controller.view.frame.intersects(visibleBounds) && self.visibleControllers.contains(controller) {
                 nowShowingPages.insert(i)
             }
         }
@@ -510,7 +510,9 @@ extension PageTabViewController: UIScrollViewDelegate {
 
                 self.constructPagingViewControllers()
                 self.layoutPagingViewControllers()
+                self.contentScrollView.delegate = nil
                 self.contentScrollView.contentOffset.x -= self.pageSize.width
+                self.contentScrollView.delegate = self
             } else if self.prevPageThresholdX >= minimumVisibleX && self.isVaildPage(self.previousPage) {
                 self.updatePage(currentPage: self.previousPage)
 
@@ -520,7 +522,9 @@ extension PageTabViewController: UIScrollViewDelegate {
 
                 self.constructPagingViewControllers()
                 self.layoutPagingViewControllers()
+                self.contentScrollView.delegate = nil
                 self.contentScrollView.contentOffset.x += self.pageSize.width
+                self.contentScrollView.delegate = self
             }
         } else {
             if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {
