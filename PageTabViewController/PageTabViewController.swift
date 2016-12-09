@@ -38,9 +38,6 @@ open class PageTabViewController: UIViewController {
 
     fileprivate var currentIndex: Int = 0 {
         didSet {
-            self.delegate?.pageTabViewMovePage?(controller: self,
-                                               nextPage: self.currentPage,
-                                               previousPage: oldValue)
             self.pageTabView.moveTo(page: self.currentIndex)
         }
     }
@@ -139,6 +136,20 @@ open class PageTabViewController: UIViewController {
 
         self.pageTabView.menuSelectedBlock = { [unowned self] (prevPage: Int, nextPage: Int) in
             self.setPageView(page: nextPage)
+            // will be hidden pages
+            let hidingPages = self.showingPages.filter { $0 != nextPage }
+            hidingPages.forEach {
+                self.delegate?.pageTabViewWillHidePage?(controller: self, page: $0)
+                if let viewable = self.controllers[$0] as? PageTabChildManageable {
+                    viewable.pageTabViewWillHidePage?()
+                }
+            }
+            // will show pages
+            self.delegate?.pageTabViewWillShowPage?(controller: self, page: nextPage)
+            if let viewable = self.controllers[nextPage] as? PageTabChildManageable {
+                viewable.pageTabViewWillShowPage?()
+            }
+            self.showingPages = [nextPage]
         }
         self.pageTabView.moveToInitialPosition()
         self.pageTabView.moveTo(page: self.currentPage)

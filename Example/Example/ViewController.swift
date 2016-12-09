@@ -139,10 +139,6 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
         self.navigationController?.pushViewController(pageTabController, animated: true)
     }
 
-    func pageTabViewMovePage(controller: PageTabViewController, nextPage: Int, previousPage: Int) {
-        print("nextPage \(nextPage), previousPage: \(previousPage)")
-    }
-
     public func pageTabViewWillHidePage(controller: PageTabViewController, page: Int) {
         print("hidePage \(page)")
     }

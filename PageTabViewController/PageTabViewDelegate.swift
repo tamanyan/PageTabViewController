@@ -9,7 +9,6 @@
 import UIKit
 
 @objc public protocol PageTabViewDelegate {
-    @objc optional func pageTabViewMovePage(controller: PageTabViewController, nextPage: Int, previousPage: Int)
     @objc optional func pageTabViewWillShowPage(controller: PageTabViewController, page: Int)
     @objc optional func pageTabViewWillHidePage(controller: PageTabViewController, page: Int)
 }
