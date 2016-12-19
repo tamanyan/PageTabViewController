@@ -22,11 +22,11 @@ class FruitsTableViewController: UITableViewController, PageTabChildManageable {
     // MARK: - PageTabChildManageable
 
     func pageTabViewWillShowPage() {
-        print("pageTabViewWillShowPage \(self.fruits)")
+        print("pageTabViewWillShowPage \(self.fruits[0])")
     }
 
     func pageTabViewWillHidePage() {
-        print("pageTabViewWillHidePage \(self.fruits)")
+        print("pageTabViewWillHidePage \(self.fruits[0])")
     }
 
     // MARK: - UITableViewDataSource

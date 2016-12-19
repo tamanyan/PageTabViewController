@@ -196,9 +196,11 @@ open class PageTabViewController: UIViewController {
                 self.updatePage(currentPage: page)
             }
 
+            self.contentScrollView.delegate = nil
             self.constructPagingViewControllers()
             self.layoutPagingViewControllers()
             self.setCenterContentOffset()
+            self.contentScrollView.delegate = self
 
             if page == self.lastPage {
                 self.contentScrollView.delegate = nil
