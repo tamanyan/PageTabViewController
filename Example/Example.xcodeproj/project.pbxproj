@@ -16,6 +16,7 @@
 		C5D3698B1DD58CFC005D23EE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D3698A1DD58CFC005D23EE /* ViewController.swift */; };
 		C5D369AB1DD59B63005D23EE /* PageTabViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D369AA1DD59B63005D23EE /* PageTabViewController.framework */; };
 		C5D369AC1DD59B63005D23EE /* PageTabViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5D369AA1DD59B63005D23EE /* PageTabViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C5FFE4AD1E56EC28005F43BC /* StandardFlexibleWidthBottomMenuOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFE4AC1E56EC28005F43BC /* StandardFlexibleWidthBottomMenuOptions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +45,7 @@
 		C5D369841DD58CDC005D23EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5D3698A1DD58CFC005D23EE /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C5D369AA1DD59B63005D23EE /* PageTabViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PageTabViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5FFE4AC1E56EC28005F43BC /* StandardFlexibleWidthBottomMenuOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardFlexibleWidthBottomMenuOptions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				C5D3698A1DD58CFC005D23EE /* ViewController.swift */,
 				C529166B1DDDA53F0052467D /* StandardFixedWidthMenuOptions.swift */,
 				C529166D1DDDA5B40052467D /* StandardFlexibleWidthMenuOptions.swift */,
+				C5FFE4AC1E56EC28005F43BC /* StandardFlexibleWidthBottomMenuOptions.swift */,
 				C529166F1DDDA5EC0052467D /* InfiniteFlexibleWidthMenuOptions.swift */,
 				C5D369751DD58CDC005D23EE /* Example-Bridging-Header.h */,
 				C5D3697F1DD58CDC005D23EE /* Assets.xcassets */,
@@ -173,6 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C529166C1DDDA53F0052467D /* StandardFixedWidthMenuOptions.swift in Sources */,
+				C5FFE4AD1E56EC28005F43BC /* StandardFlexibleWidthBottomMenuOptions.swift in Sources */,
 				C5D3698B1DD58CFC005D23EE /* ViewController.swift in Sources */,
 				C529166E1DDDA5B40052467D /* StandardFlexibleWidthMenuOptions.swift in Sources */,
 				C52916701DDDA5EC0052467D /* InfiniteFlexibleWidthMenuOptions.swift in Sources */,

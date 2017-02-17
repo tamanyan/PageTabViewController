@@ -222,79 +222,152 @@ open class PageTabViewController: UIViewController {
 
     fileprivate func layoutContentScrollView() {
         self.contentScrollView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addConstraints([
-            // top
-            NSLayoutConstraint(
-                item: self.contentScrollView,
-                attribute: .top,
-                relatedBy: .equal,
-                toItem: self.pageTabView,
-                attribute: .bottom,
-                multiplier:1.0,
-                constant: 0.0),
-            // left
-            NSLayoutConstraint(
-                item: self.contentScrollView,
-                attribute: .leading,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .leading,
-                multiplier: 1.0,
-                constant: 0),
-            // right
-            NSLayoutConstraint(
-                item: self.view,
-                attribute: .trailing,
-                relatedBy: .equal,
-                toItem: self.contentScrollView,
-                attribute: .trailing,
-                multiplier: 1.0,
-                constant: 0),
-            // bottom
-            NSLayoutConstraint(
-                item: self.view,
-                attribute: .bottom,
-                relatedBy: .equal,
-                toItem: self.contentScrollView,
-                attribute: .bottom,
-                multiplier: 1.0,
-                constant: 0),
-            ])
+        if self.menuOptions.menuPosition == .top {
+            self.view.addConstraints([
+                // top
+                NSLayoutConstraint(
+                    item: self.contentScrollView,
+                    attribute: .top,
+                    relatedBy: .equal,
+                    toItem: self.pageTabView,
+                    attribute: .bottom,
+                    multiplier:1.0,
+                    constant: 0.0),
+                // left
+                NSLayoutConstraint(
+                    item: self.contentScrollView,
+                    attribute: .leading,
+                    relatedBy: .equal,
+                    toItem: self.view,
+                    attribute: .leading,
+                    multiplier: 1.0,
+                    constant: 0),
+                // right
+                NSLayoutConstraint(
+                    item: self.view,
+                    attribute: .trailing,
+                    relatedBy: .equal,
+                    toItem: self.contentScrollView,
+                    attribute: .trailing,
+                    multiplier: 1.0,
+                    constant: 0),
+                // bottom
+                NSLayoutConstraint(
+                    item: self.view,
+                    attribute: .bottom,
+                    relatedBy: .equal,
+                    toItem: self.contentScrollView,
+                    attribute: .bottom,
+                    multiplier: 1.0,
+                    constant: 0),
+                ])
+        } else {
+            self.view.addConstraints([
+                // top
+                NSLayoutConstraint(
+                    item: self.contentScrollView,
+                    attribute: .top,
+                    relatedBy: .equal,
+                    toItem: topLayoutGuide,
+                    attribute: .bottom,
+                    multiplier:1.0,
+                    constant: 0.0),
+                // left
+                NSLayoutConstraint(
+                    item: self.contentScrollView,
+                    attribute: .leading,
+                    relatedBy: .equal,
+                    toItem: self.view,
+                    attribute: .leading,
+                    multiplier: 1.0,
+                    constant: 0),
+                // right
+                NSLayoutConstraint(
+                    item: self.view,
+                    attribute: .trailing,
+                    relatedBy: .equal,
+                    toItem: self.contentScrollView,
+                    attribute: .trailing,
+                    multiplier: 1.0,
+                    constant: 0),
+                // bottom
+                NSLayoutConstraint(
+                    item: self.contentScrollView,
+                    attribute: .bottom,
+                    relatedBy: .equal,
+                    toItem: self.pageTabView,
+                    attribute: .top,
+                    multiplier: 1.0,
+                    constant: 0),
+                ])
+        }
     }
 
     fileprivate func layoutTabMenuView() {
         self.pageTabView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addConstraints([
-            NSLayoutConstraint(item: self.pageTabView,
-                               attribute: .height,
-                               relatedBy: .equal,
-                               toItem: nil,
-                               attribute: .height,
-                               multiplier: 1.0,
-                               constant: self.menuOptions.height),
-            NSLayoutConstraint(item: self.pageTabView,
-                               attribute: .top,
-                               relatedBy: .equal,
-                               toItem: topLayoutGuide,
-                               attribute: .bottom,
-                               multiplier:1.0,
-                               constant: 0.0),
-            NSLayoutConstraint(item: self.pageTabView,
-                               attribute: .leading,
-                               relatedBy: .equal,
-                               toItem: view,
-                               attribute: .leading,
-                               multiplier: 1.0,
-                               constant: 0.0),
-            NSLayoutConstraint(item: view,
-                               attribute: .trailing,
-                               relatedBy: .equal,
-                               toItem: self.pageTabView,
-                               attribute: .trailing,
-                               multiplier: 1.0,
-                               constant: 0.0),
-            ])
-
+        if self.menuOptions.menuPosition == .top {
+            self.view.addConstraints([
+                NSLayoutConstraint(item: self.pageTabView,
+                                   attribute: .height,
+                                   relatedBy: .equal,
+                                   toItem: nil,
+                                   attribute: .height,
+                                   multiplier: 1.0,
+                                   constant: self.menuOptions.height),
+                NSLayoutConstraint(item: self.pageTabView,
+                                   attribute: .top,
+                                   relatedBy: .equal,
+                                   toItem: topLayoutGuide,
+                                   attribute: .bottom,
+                                   multiplier:1.0,
+                                   constant: 0.0),
+                NSLayoutConstraint(item: self.pageTabView,
+                                   attribute: .leading,
+                                   relatedBy: .equal,
+                                   toItem: view,
+                                   attribute: .leading,
+                                   multiplier: 1.0,
+                                   constant: 0.0),
+                NSLayoutConstraint(item: view,
+                                   attribute: .trailing,
+                                   relatedBy: .equal,
+                                   toItem: self.pageTabView,
+                                   attribute: .trailing,
+                                   multiplier: 1.0,
+                                   constant: 0.0),
+                ])
+        } else {
+            self.view.addConstraints([
+                NSLayoutConstraint(item: self.pageTabView,
+                                   attribute: .height,
+                                   relatedBy: .equal,
+                                   toItem: nil,
+                                   attribute: .height,
+                                   multiplier: 1.0,
+                                   constant: self.menuOptions.height),
+                NSLayoutConstraint(item: self.pageTabView,
+                                   attribute: .bottom,
+                                   relatedBy: .equal,
+                                   toItem: bottomLayoutGuide,
+                                   attribute: .bottom,
+                                   multiplier:1.0,
+                                   constant: 0.0),
+                NSLayoutConstraint(item: self.pageTabView,
+                                   attribute: .leading,
+                                   relatedBy: .equal,
+                                   toItem: view,
+                                   attribute: .leading,
+                                   multiplier: 1.0,
+                                   constant: 0.0),
+                NSLayoutConstraint(item: view,
+                                   attribute: .trailing,
+                                   relatedBy: .equal,
+                                   toItem: self.pageTabView,
+                                   attribute: .trailing,
+                                   multiplier: 1.0,
+                                   constant: 0.0),
+                ])
+        }
     }
 
     fileprivate func constructPagingViewControllers() {

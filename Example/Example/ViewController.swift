@@ -51,8 +51,8 @@ class FruitsTableViewController: UITableViewController, PageTabChildManageable {
 }
 
 class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTabViewDelegate {
-    let titles = ["standard + fixwidth menu", "standard + flexible width menu", "infinite + flexible width menu"]
-    let menuTitles: [UIColor:String] = [
+    let titles = ["standard + fixwidth menu", "standard + flexible width menu", "standard + flexible width bottom menu", "infinite + flexible width menu"]
+    let menuTitles: [UIColor: String] = [
         .green: "1st Green Menu",
         .gray: "2nd Gray Menu",
         .red: "3rd Red Menu",
@@ -61,7 +61,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
         .lightGray: "6th LightGray Menu",
     ]
 
-    let items: [UIColor:[String]] = [
+    let items: [UIColor: [String]] = [
         .green: ["1st", "Apple", "Apricot", "Avocado", "Banana", "Blackberry", "Blueberry", "Cantaloupe", "Cherry", "Cherimoya"],
         .gray: ["2nd", "Clementine", "Coconut", "Cranberry", "Cucumber", "Custard apple", "Damson", "Date", "Dragonfruit", "Durian",
                 "Elderberry", "Feijoa", "Fig", "Grape", "Grapefruit", "Guava", "Udara", "Honeyberry", "Huckleberry", "Jabuticaba",
@@ -123,6 +123,16 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
             pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 2 {
+            let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
+            let pageTabController = PageTabViewController(pageItems: colors.map({ [unowned self] in
+                let vc = FruitsTableViewController()
+                vc.fruits = self.items[$0]!
+                return (viewController: vc, menuTitle: self.menuTitles[$0]!)
+            }), options: StandardFlexibleWidthBottomMenuOptions())
+            pageTabController.navigationItem.title = self.titles[indexPath.row]
+            pageTabController.delegate = self
+            self.showPageTabController(pageTabController)
+        } else if indexPath.row == 3 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
             let pageTabController = PageTabViewController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
