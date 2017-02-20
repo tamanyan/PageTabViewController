@@ -1,12 +1,12 @@
-PageTabViewController
+Sakuin
 ===================================
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/hsylife/SwiftyPickerPopover)
 
-Paging view controller with tab in Swift
+Custumizable Page Tab View Controller in Swift
 
 
 ## Requirements
 
-- iOS 8.0+
+- iOS 9.0+
 - Swift 3

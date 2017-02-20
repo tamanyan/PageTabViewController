@@ -6,7 +6,8 @@
 //  Copyright © 2017 tamanyan. All rights reserved.
 //
 
-import PageTabViewController
+import Sakuin
+import UIKit
 
 struct StandardFlexibleWidthBottomMenuOptions: PageTabConfigurable {
     struct MenuOptions: MenuViewConfigurable {

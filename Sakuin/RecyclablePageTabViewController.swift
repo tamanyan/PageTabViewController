@@ -1,14 +1,14 @@
 //
-//  NonRecyclablePageTabViewController.swift
+//  RecyclablePageTabViewController.swift
 //  PageTabViewController
 //
-//  Created by svpcadmin on 2/20/17.
-//  Copyright © 2017 tamanyan. All rights reserved.
+//  Created by svpcadmin on 11/11/16.
+//  Copyright © 2016 tamanyan. All rights reserved.
 //
 
 import UIKit
 
-class NonRecyclablePageTabViewController: UIViewController {
+class RecyclablePageTabViewController: UIViewController, PageTabViewControllerType {
     public let controllers: [UIViewController]
 
     public let menuTitles: [String]
@@ -43,6 +43,13 @@ class NonRecyclablePageTabViewController: UIViewController {
     }
 
     /**
+     number of valid page
+     */
+    public var numberOfVisiblePages: Int {
+        return 3
+    }
+
+    /**
      Menu Options
      */
     var menuOptions: MenuViewConfigurable {
@@ -63,6 +70,10 @@ class NonRecyclablePageTabViewController: UIViewController {
         return self.contentScrollView.frame.size
     }
 
+    private var centerContentOffsetX: CGFloat {
+        return CGFloat(self.numberOfVisiblePages / 2) * self.contentScrollView.frame.width
+    }
+
     /**
      current page index
      */
@@ -74,14 +85,24 @@ class NonRecyclablePageTabViewController: UIViewController {
      previous page index
      */
     var previousPage: Int {
-        return self.currentPage - 1
+        switch self.menuOptions.displayMode {
+        case .infinite:
+            return self.currentPage - 1 < 0 ? self.pageCount - 1 : self.currentPage - 1
+        default:
+            return self.currentPage - 1
+        }
     }
 
     /**
      next page index
      */
     var nextPage: Int {
-        return self.currentPage + 1
+        switch self.menuOptions.displayMode {
+        case .infinite:
+            return self.currentPage + 1 > self.pageCount - 1 ? 0 : self.currentPage + 1
+        default:
+            return self.currentPage + 1
+        }
     }
 
     var lastPage: Int {
@@ -118,14 +139,14 @@ class NonRecyclablePageTabViewController: UIViewController {
             // will be hidden pages
             let hidingPages = self.showingPages.filter { $0 != nextPage }
             hidingPages.forEach {
-                self.delegate?.pageTabViewWillHidePage?(/*controller: self, */page: $0)
-                if let viewable = self.controllers[$0] as? PageTabChildManageable {
+                self.delegate?.pageTabViewWillHidePage?(controller: self, page: $0)
+                if let viewable = self.controllers[$0] as? PageTabChildDelegate {
                     viewable.pageTabViewWillHidePage?()
                 }
             }
             // will show pages
-            self.delegate?.pageTabViewWillShowPage?(/*controller: self, */page: nextPage)
-            if let viewable = self.controllers[nextPage] as? PageTabChildManageable {
+            self.delegate?.pageTabViewWillShowPage?(controller: self, page: nextPage)
+            if let viewable = self.controllers[nextPage] as? PageTabChildDelegate {
                 viewable.pageTabViewWillShowPage?()
             }
             self.showingPages = [nextPage]
@@ -134,7 +155,7 @@ class NonRecyclablePageTabViewController: UIViewController {
         self.pageTabView.moveTo(page: self.currentPage)
 
         if self.currentPage < self.controllers.count {
-            if let viewable = self.controllers[self.currentPage] as? PageTabChildManageable {
+            if let viewable = self.controllers[self.currentPage] as? PageTabChildDelegate {
                 viewable.pageTabViewWillShowPage?()
             }
             self.showingPages.insert(self.currentPage)
@@ -151,8 +172,17 @@ class NonRecyclablePageTabViewController: UIViewController {
         self.contentScrollView.contentSize = CGSize(
             width: self.contentScrollView.frame.width * CGFloat(self.visibleControllers.count),
             height: self.contentScrollView.frame.height)
-
-        self.contentScrollView.contentOffset.x = self.contentScrollView.frame.width * CGFloat(currentPage)
+        if case .standard(_) = self.menuOptions.displayMode {
+            if self.currentPage == self.lastPage {
+                self.contentScrollView.contentOffset.x = self.pageSize.width * 2
+            } else if self.currentPage == self.firstPage {
+                self.contentScrollView.contentOffset.x = 0
+            } else {
+                self.setCenterContentOffset()
+            }
+        } else {
+            self.setCenterContentOffset()
+        }
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -160,10 +190,37 @@ class NonRecyclablePageTabViewController: UIViewController {
     }
 
     fileprivate func setPageView(page: Int) {
-        self.updatePage(currentPage: page)
-        self.constructPagingViewControllers()
-        self.layoutPagingViewControllers()
-        self.contentScrollView.contentOffset.x = self.contentScrollView.frame.width * CGFloat(currentPage)
+        if case .standard(_) = self.menuOptions.displayMode {
+            if page == self.lastPage {
+                self.updatePage(currentPage: page - 1)
+            } else if page == self.firstPage {
+                self.updatePage(currentPage: page + 1)
+            } else {
+                self.updatePage(currentPage: page)
+            }
+
+            self.contentScrollView.delegate = nil
+            self.constructPagingViewControllers()
+            self.layoutPagingViewControllers()
+            self.setCenterContentOffset()
+            self.contentScrollView.delegate = self
+
+            if page == self.lastPage {
+                self.contentScrollView.delegate = nil
+                self.contentScrollView.contentOffset.x += self.pageSize.width
+                self.updatePage(currentPage: page)
+                self.contentScrollView.delegate = self
+            } else if page == self.firstPage {
+                self.contentScrollView.delegate = nil
+                self.contentScrollView.contentOffset.x -= self.pageSize.width
+                self.updatePage(currentPage: page)
+                self.contentScrollView.delegate = self
+            }
+        } else {
+            self.updatePage(currentPage: page)
+            self.constructPagingViewControllers()
+            self.layoutPagingViewControllers()
+        }
     }
 
     fileprivate func layoutContentScrollView() {
@@ -198,6 +255,22 @@ class NonRecyclablePageTabViewController: UIViewController {
 
     fileprivate func constructPagingViewControllers() {
         for (index, controller) in controllers.enumerated() {
+            guard self.shouldLoad(page: index) else {
+                // remove unnecessary child view controllers
+                if self.isVisible(controller: controller) {
+                    controller.willMove(toParentViewController: nil)
+                    controller.view!.removeFromSuperview()
+                    controller.removeFromParentViewController()
+
+                    let _ = visibleControllers.index(of: controller).flatMap { visibleControllers.remove(at: $0) }
+                }
+                continue
+            }
+
+            if self.isVisible(controller: controller) {
+                continue
+            }
+
             guard let pagingView = controller.view else {
                 fatalError("\(controller) doesn't have any view")
             }
@@ -217,28 +290,25 @@ class NonRecyclablePageTabViewController: UIViewController {
         NSLayoutConstraint.deactivate(self.contentScrollView.constraints)
 
         for (index, controller) in controllers.enumerated() {
-            guard let pageView = controller.view else {
+            guard let pageView = controller.view, self.shouldLoad(page: index) else {
                 continue
             }
 
-            if index == self.firstPage {
+            switch index {
+            case self.previousPage:
                 pageView.leftAnchor.constraint(equalTo: self.contentScrollView.leftAnchor).isActive = true
-
-                if let nextPagingView = self.controller(withPage: index + 1)?.view, index + 1 == self.lastPage {
-                    pageView.rightAnchor.constraint(equalTo: nextPagingView.leftAnchor).isActive = true
-                }
-            } else if index == self.lastPage {
-                pageView.rightAnchor.constraint(equalTo: self.contentScrollView.rightAnchor).isActive = true
-
-                if let previousPagingView = self.controller(withPage: index - 1)?.view, index - 1 == self.firstPage {
-                    pageView.leftAnchor.constraint(equalTo: previousPagingView.rightAnchor).isActive = true
-                }
-            } else {
-                guard let previousPagingView = self.controller(withPage: index - 1)?.view,
-                    let nextPagingView = self.controller(withPage: index + 1)?.view else { continue }
+                break
+            case self.currentPage:
+                guard let previousPagingView = self.controllers[self.previousPage].view,
+                    let nextPagingView = self.controllers[self.nextPage].view else { continue }
 
                 pageView.leftAnchor.constraint(equalTo: previousPagingView.rightAnchor).isActive = true
                 pageView.rightAnchor.constraint(equalTo: nextPagingView.leftAnchor).isActive = true
+                break
+            case self.nextPage:
+                pageView.rightAnchor.constraint(equalTo: self.contentScrollView.rightAnchor).isActive = true
+                break
+            default: break
             }
             pageView.topAnchor.constraint(equalTo: self.contentScrollView.topAnchor).isActive = true
             pageView.bottomAnchor.constraint(equalTo: self.contentScrollView.bottomAnchor).isActive = true
@@ -247,12 +317,25 @@ class NonRecyclablePageTabViewController: UIViewController {
         }
     }
 
-    func controller(withPage page: Int) -> UIViewController? {
-        return page >= 0 && page < self.controllers.count ? self.controllers[page] : nil
-    }
-
     func updatePage(currentPage page: Int) {
         self.currentIndex = page
+    }
+
+    func shouldLoad(page: Int) -> Bool {
+        if self.currentPage == page ||
+            self.previousPage == page ||
+            self.nextPage == page {
+            return true
+        }
+        return false
+    }
+
+    fileprivate func setCenterContentOffset() {
+        self.contentScrollView.contentOffset = CGPoint(x: self.centerContentOffsetX, y: self.contentScrollView.contentOffset.y)
+    }
+
+    fileprivate func isVisible(controller: UIViewController) -> Bool {
+        return self.childViewControllers.contains(controller)
     }
 
     fileprivate func isVaildPage(_ page: Int) -> Bool {
@@ -263,7 +346,7 @@ class NonRecyclablePageTabViewController: UIViewController {
 
 // MARK: - Scroll view delegate
 
-extension NonRecyclablePageTabViewController: UIScrollViewDelegate {
+extension RecyclablePageTabViewController: UIScrollViewDelegate {
     private var nextPageThresholdX: CGFloat {
         return (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 1.5
     }
@@ -287,16 +370,16 @@ extension NonRecyclablePageTabViewController: UIScrollViewDelegate {
         let intersection = nowShowingPages.intersection(self.showingPages)
         for i in nowShowingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabViewWillShowPage?(/*controller: self, */page: i)
-                if let viewable = self.controllers[i] as? PageTabChildManageable {
+                self.delegate?.pageTabViewWillShowPage?(controller: self, page: i)
+                if let viewable = self.controllers[i] as? PageTabChildDelegate {
                     viewable.pageTabViewWillShowPage?()
                 }
             }
         }
         for i in self.showingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabViewWillHidePage?(/*controller: self, */page: i)
-                if let viewable = self.controllers[i] as? PageTabChildManageable {
+                self.delegate?.pageTabViewWillHidePage?(controller: self, page: i)
+                if let viewable = self.controllers[i] as? PageTabChildDelegate {
                     viewable.pageTabViewWillHidePage?()
                 }
             }
@@ -305,16 +388,56 @@ extension NonRecyclablePageTabViewController: UIScrollViewDelegate {
 
         let minimumVisibleX = visibleBounds.minX
         let maximumVisibleX = visibleBounds.maxX
-        if self.lastPage == self.currentPage &&
-            maximumVisibleX <= (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 0.5 {
+        if case .standard(_) = self.menuOptions.displayMode {
+            if self.lastPage == self.currentPage &&
+                maximumVisibleX <= (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 0.5 {
 
-            self.updatePage(currentPage: self.previousPage)
-            return
-        } else if self.firstPage == self.currentPage &&
-            minimumVisibleX >= (self.contentScrollView.contentSize.width / 2) - self.pageSize.width * 0.5 {
+                self.updatePage(currentPage: self.previousPage)
+                return
+            } else if self.firstPage == self.currentPage &&
+                minimumVisibleX >= (self.contentScrollView.contentSize.width / 2) - self.pageSize.width * 0.5 {
 
-            self.updatePage(currentPage: self.nextPage)
-            return
+                self.updatePage(currentPage: self.nextPage)
+                return
+            }
+
+            if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {
+                self.updatePage(currentPage: self.nextPage)
+
+                guard self.isVaildPage(self.nextPage) else {
+                    return
+                }
+
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.delegate = nil
+                self.contentScrollView.contentOffset.x -= self.pageSize.width
+                self.contentScrollView.delegate = self
+            } else if self.prevPageThresholdX >= minimumVisibleX && self.isVaildPage(self.previousPage) {
+                self.updatePage(currentPage: self.previousPage)
+
+                guard self.isVaildPage(self.previousPage) else {
+                    return
+                }
+
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.delegate = nil
+                self.contentScrollView.contentOffset.x += self.pageSize.width
+                self.contentScrollView.delegate = self
+            }
+        } else {
+            if self.nextPageThresholdX <= maximumVisibleX && self.isVaildPage(self.nextPage) {
+                self.updatePage(currentPage: self.nextPage)
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.contentOffset.x -= self.pageSize.width
+            } else if self.prevPageThresholdX >= minimumVisibleX && self.isVaildPage(self.previousPage) {
+                self.updatePage(currentPage: self.previousPage)
+                self.constructPagingViewControllers()
+                self.layoutPagingViewControllers()
+                self.contentScrollView.contentOffset.x += self.pageSize.width
+            }
         }
     }
 }

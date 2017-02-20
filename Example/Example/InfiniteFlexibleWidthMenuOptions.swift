@@ -6,7 +6,8 @@
 //  Copyright © 2016 tamanyan. All rights reserved.
 //
 
-import PageTabViewController
+import Sakuin
+import UIKit
 
 struct InfiniteFlexibleWidthMenuOptions: PageTabConfigurable {
     struct MenuOptions: MenuViewConfigurable {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public protocol PageTabChildManageable {
+@objc public protocol PageTabChildDelegate {
     @objc optional func pageTabViewWillShowPage()
     @objc optional func pageTabViewWillHidePage()
 }

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C5D369571DD58CA0005D23EE"
-               BuildableName = "PageTabViewController.framework"
-               BlueprintName = "PageTabViewController"
-               ReferencedContainer = "container:PageTabViewController.xcodeproj">
+               BuildableName = "Sakuin.framework"
+               BlueprintName = "Sakuin"
+               ReferencedContainer = "container:Sakuin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C5D369571DD58CA0005D23EE"
-            BuildableName = "PageTabViewController.framework"
-            BlueprintName = "PageTabViewController"
-            ReferencedContainer = "container:PageTabViewController.xcodeproj">
+            BuildableName = "Sakuin.framework"
+            BlueprintName = "Sakuin"
+            ReferencedContainer = "container:Sakuin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,9 +64,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C5D369571DD58CA0005D23EE"
-            BuildableName = "PageTabViewController.framework"
-            BlueprintName = "PageTabViewController"
-            ReferencedContainer = "container:PageTabViewController.xcodeproj">
+            BuildableName = "Sakuin.framework"
+            BlueprintName = "Sakuin"
+            ReferencedContainer = "container:Sakuin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

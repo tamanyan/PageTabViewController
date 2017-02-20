@@ -5,6 +5,6 @@
       location = "group:Example/Example.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:PageTabViewController.xcodeproj">
+      location = "group:/Users/tama/Documents/sources/Nikkei/ReNikkei/PageTabViewController/Sakuin.xcodeproj">
    </FileRef>
 </Workspace>

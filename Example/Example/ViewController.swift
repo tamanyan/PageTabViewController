@@ -6,12 +6,10 @@
 //  Copyright © 2016 tamanyan. All rights reserved.
 //
 
+import Sakuin
 import UIKit
 
-import UIKit
-import PageTabViewController
-
-class FruitsTableViewController: UITableViewController, PageTabChildManageable {
+class FruitsTableViewController: UITableViewController, PageTabChildDelegate {
     var fruits = [String]()
 
     override func viewDidLoad() {
@@ -19,7 +17,7 @@ class FruitsTableViewController: UITableViewController, PageTabChildManageable {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
 
-    // MARK: - PageTabChildManageable
+    // MARK: - PageTabChildDelegate
 
     func pageTabViewWillShowPage() {
         print("pageTabViewWillShowPage \(self.fruits[0])")
@@ -149,11 +147,11 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
         self.navigationController?.pushViewController(pageTabController, animated: true)
     }
 
-    public func pageTabViewWillHidePage(controller: PageTabViewController, page: Int) {
+    public func pageTabViewWillHidePage(controller: PageTabViewControllerType, page: Int) {
         print("hidePage \(page)")
     }
 
-    public func pageTabViewWillShowPage(controller: PageTabViewController, page: Int) {
+    public func pageTabViewWillShowPage(controller: PageTabViewControllerType, page: Int) {
         print("showPage \(page)")
     }
 }

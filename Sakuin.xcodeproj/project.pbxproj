@@ -7,31 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C510DE2E1E5AE81E00441E01 /* PageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C510DE2D1E5AE81E00441E01 /* PageTabViewController.swift */; };
-		C510DE301E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C510DE2F1E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift */; };
-		C51C82571DF805510075B6DC /* PageTabViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */; };
-		C51C82591DF8147B0075B6DC /* PageTabChildViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C82581DF8147B0075B6DC /* PageTabChildViewable.swift */; };
-		C5D3695D1DD58CA0005D23EE /* PageTabViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C5D369A51DD58F0A005D23EE /* RecyclablePageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A41DD58F0A005D23EE /* RecyclablePageTabViewController.swift */; };
-		C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */; };
-		C5D369A91DD590C6005D23EE /* MenuViewConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */; };
-		C5D369B01DD5A73B005D23EE /* PageTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369AF1DD5A73B005D23EE /* PageTabView.swift */; };
-		C5D369B21DD5AB97005D23EE /* PageTabCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */; };
+		23CD01BA1E5B31020050B26D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23CD01AE1E5B31020050B26D /* Info.plist */; };
+		23CD01BB1E5B31020050B26D /* MenuViewConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01AF1E5B31020050B26D /* MenuViewConfigurable.swift */; };
+		23CD01BC1E5B31020050B26D /* NonRecyclablePageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B01E5B31020050B26D /* NonRecyclablePageTabViewController.swift */; };
+		23CD01BD1E5B31020050B26D /* PageTabChildViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B11E5B31020050B26D /* PageTabChildViewable.swift */; };
+		23CD01BE1E5B31020050B26D /* PageTabCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B21E5B31020050B26D /* PageTabCollectionCell.swift */; };
+		23CD01BF1E5B31020050B26D /* PageTabConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B31E5B31020050B26D /* PageTabConfigurable.swift */; };
+		23CD01C01E5B31020050B26D /* PageTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B41E5B31020050B26D /* PageTabView.swift */; };
+		23CD01C11E5B31020050B26D /* PageTabViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 23CD01B51E5B31020050B26D /* PageTabViewController.h */; };
+		23CD01C21E5B31020050B26D /* PageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B61E5B31020050B26D /* PageTabViewController.swift */; };
+		23CD01C31E5B31020050B26D /* PageTabViewControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B71E5B31020050B26D /* PageTabViewControllerType.swift */; };
+		23CD01C41E5B31020050B26D /* PageTabViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B81E5B31020050B26D /* PageTabViewDelegate.swift */; };
+		23CD01C51E5B31020050B26D /* RecyclablePageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD01B91E5B31020050B26D /* RecyclablePageTabViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C510DE2D1E5AE81E00441E01 /* PageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewController.swift; sourceTree = "<group>"; };
-		C510DE2F1E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonRecyclablePageTabViewController.swift; sourceTree = "<group>"; };
-		C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewDelegate.swift; sourceTree = "<group>"; };
-		C51C82581DF8147B0075B6DC /* PageTabChildViewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabChildViewable.swift; sourceTree = "<group>"; };
-		C5D369581DD58CA0005D23EE /* PageTabViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PageTabViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageTabViewController.h; sourceTree = "<group>"; };
-		C5D3695C1DD58CA0005D23EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C5D369A41DD58F0A005D23EE /* RecyclablePageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecyclablePageTabViewController.swift; sourceTree = "<group>"; };
-		C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabConfigurable.swift; sourceTree = "<group>"; };
-		C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewConfigurable.swift; sourceTree = "<group>"; };
-		C5D369AF1DD5A73B005D23EE /* PageTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabView.swift; sourceTree = "<group>"; };
-		C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabCollectionCell.swift; sourceTree = "<group>"; };
+		23CD01AE1E5B31020050B26D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23CD01AF1E5B31020050B26D /* MenuViewConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewConfigurable.swift; sourceTree = "<group>"; };
+		23CD01B01E5B31020050B26D /* NonRecyclablePageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonRecyclablePageTabViewController.swift; sourceTree = "<group>"; };
+		23CD01B11E5B31020050B26D /* PageTabChildViewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabChildViewable.swift; sourceTree = "<group>"; };
+		23CD01B21E5B31020050B26D /* PageTabCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabCollectionCell.swift; sourceTree = "<group>"; };
+		23CD01B31E5B31020050B26D /* PageTabConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabConfigurable.swift; sourceTree = "<group>"; };
+		23CD01B41E5B31020050B26D /* PageTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabView.swift; sourceTree = "<group>"; };
+		23CD01B51E5B31020050B26D /* PageTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageTabViewController.h; sourceTree = "<group>"; };
+		23CD01B61E5B31020050B26D /* PageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewController.swift; sourceTree = "<group>"; };
+		23CD01B71E5B31020050B26D /* PageTabViewControllerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewControllerType.swift; sourceTree = "<group>"; };
+		23CD01B81E5B31020050B26D /* PageTabViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewDelegate.swift; sourceTree = "<group>"; };
+		23CD01B91E5B31020050B26D /* RecyclablePageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecyclablePageTabViewController.swift; sourceTree = "<group>"; };
+		C5D369581DD58CA0005D23EE /* Sakuin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sakuin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,10 +48,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23CD01AD1E5B30EA0050B26D /* Sakuin */ = {
+			isa = PBXGroup;
+			children = (
+				23CD01AE1E5B31020050B26D /* Info.plist */,
+				23CD01AF1E5B31020050B26D /* MenuViewConfigurable.swift */,
+				23CD01B01E5B31020050B26D /* NonRecyclablePageTabViewController.swift */,
+				23CD01B11E5B31020050B26D /* PageTabChildViewable.swift */,
+				23CD01B21E5B31020050B26D /* PageTabCollectionCell.swift */,
+				23CD01B31E5B31020050B26D /* PageTabConfigurable.swift */,
+				23CD01B41E5B31020050B26D /* PageTabView.swift */,
+				23CD01B51E5B31020050B26D /* PageTabViewController.h */,
+				23CD01B61E5B31020050B26D /* PageTabViewController.swift */,
+				23CD01B71E5B31020050B26D /* PageTabViewControllerType.swift */,
+				23CD01B81E5B31020050B26D /* PageTabViewDelegate.swift */,
+				23CD01B91E5B31020050B26D /* RecyclablePageTabViewController.swift */,
+			);
+			path = Sakuin;
+			sourceTree = "<group>";
+		};
 		C5D3694E1DD58CA0005D23EE = {
 			isa = PBXGroup;
 			children = (
-				C5D3695A1DD58CA0005D23EE /* PageTabViewController */,
+				23CD01AD1E5B30EA0050B26D /* Sakuin */,
 				C5D369591DD58CA0005D23EE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,27 +78,9 @@
 		C5D369591DD58CA0005D23EE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C5D369581DD58CA0005D23EE /* PageTabViewController.framework */,
+				C5D369581DD58CA0005D23EE /* Sakuin.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		C5D3695A1DD58CA0005D23EE /* PageTabViewController */ = {
-			isa = PBXGroup;
-			children = (
-				C510DE2D1E5AE81E00441E01 /* PageTabViewController.swift */,
-				C5D369A41DD58F0A005D23EE /* RecyclablePageTabViewController.swift */,
-				C510DE2F1E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift */,
-				C5D369AF1DD5A73B005D23EE /* PageTabView.swift */,
-				C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */,
-				C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */,
-				C51C82581DF8147B0075B6DC /* PageTabChildViewable.swift */,
-				C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */,
-				C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */,
-				C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */,
-				C5D3695C1DD58CA0005D23EE /* Info.plist */,
-			);
-			path = PageTabViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,16 +90,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5D3695D1DD58CA0005D23EE /* PageTabViewController.h in Headers */,
+				23CD01C11E5B31020050B26D /* PageTabViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C5D369571DD58CA0005D23EE /* PageTabViewController */ = {
+		C5D369571DD58CA0005D23EE /* Sakuin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C5D369601DD58CA0005D23EE /* Build configuration list for PBXNativeTarget "PageTabViewController" */;
+			buildConfigurationList = C5D369601DD58CA0005D23EE /* Build configuration list for PBXNativeTarget "Sakuin" */;
 			buildPhases = (
 				C5D369531DD58CA0005D23EE /* Sources */,
 				C5D369541DD58CA0005D23EE /* Frameworks */,
@@ -106,9 +110,9 @@
 			);
 			dependencies = (
 			);
-			name = PageTabViewController;
+			name = Sakuin;
 			productName = PageTabViewController;
-			productReference = C5D369581DD58CA0005D23EE /* PageTabViewController.framework */;
+			productReference = C5D369581DD58CA0005D23EE /* Sakuin.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -117,18 +121,18 @@
 		C5D3694F1DD58CA0005D23EE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = tamanyan;
 				TargetAttributes = {
 					C5D369571DD58CA0005D23EE = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 95Q9F9WGT3;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = C5D369521DD58CA0005D23EE /* Build configuration list for PBXProject "PageTabViewController" */;
+			buildConfigurationList = C5D369521DD58CA0005D23EE /* Build configuration list for PBXProject "Sakuin" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -140,7 +144,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C5D369571DD58CA0005D23EE /* PageTabViewController */,
+				C5D369571DD58CA0005D23EE /* Sakuin */,
 			);
 		};
 /* End PBXProject section */
@@ -150,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23CD01BA1E5B31020050B26D /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,15 +165,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5D369A91DD590C6005D23EE /* MenuViewConfigurable.swift in Sources */,
-				C510DE2E1E5AE81E00441E01 /* PageTabViewController.swift in Sources */,
-				C5D369A51DD58F0A005D23EE /* RecyclablePageTabViewController.swift in Sources */,
-				C510DE301E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift in Sources */,
-				C51C82571DF805510075B6DC /* PageTabViewDelegate.swift in Sources */,
-				C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */,
-				C51C82591DF8147B0075B6DC /* PageTabChildViewable.swift in Sources */,
-				C5D369B21DD5AB97005D23EE /* PageTabCollectionCell.swift in Sources */,
-				C5D369B01DD5A73B005D23EE /* PageTabView.swift in Sources */,
+				23CD01C21E5B31020050B26D /* PageTabViewController.swift in Sources */,
+				23CD01BB1E5B31020050B26D /* MenuViewConfigurable.swift in Sources */,
+				23CD01BD1E5B31020050B26D /* PageTabChildViewable.swift in Sources */,
+				23CD01C51E5B31020050B26D /* RecyclablePageTabViewController.swift in Sources */,
+				23CD01BE1E5B31020050B26D /* PageTabCollectionCell.swift in Sources */,
+				23CD01BF1E5B31020050B26D /* PageTabConfigurable.swift in Sources */,
+				23CD01C41E5B31020050B26D /* PageTabViewDelegate.swift in Sources */,
+				23CD01BC1E5B31020050B26D /* NonRecyclablePageTabViewController.swift in Sources */,
+				23CD01C01E5B31020050B26D /* PageTabView.swift in Sources */,
+				23CD01C31E5B31020050B26D /* PageTabViewControllerType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +199,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -246,6 +253,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -284,11 +292,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = PageTabViewController/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Sakuin/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tamanyan.PageTabViewController;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tamanyan.Sakuin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -306,11 +314,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = PageTabViewController/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Sakuin/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tamanyan.PageTabViewController;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tamanyan.Sakuin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -320,7 +328,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C5D369521DD58CA0005D23EE /* Build configuration list for PBXProject "PageTabViewController" */ = {
+		C5D369521DD58CA0005D23EE /* Build configuration list for PBXProject "Sakuin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C5D3695E1DD58CA0005D23EE /* Debug */,
@@ -329,7 +337,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C5D369601DD58CA0005D23EE /* Build configuration list for PBXNativeTarget "PageTabViewController" */ = {
+		C5D369601DD58CA0005D23EE /* Build configuration list for PBXNativeTarget "Sakuin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C5D369611DD58CA0005D23EE /* Debug */,
