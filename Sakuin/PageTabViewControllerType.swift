@@ -1,6 +1,6 @@
 //
-//  PageTabViewControllerType.swift
-//  PageTabViewController
+//  PageTabControllerType.swift
+//  PageTabController
 //
 //  Created by Tamanyan on 2/20/29 H.
 //  Copyright © 29 Heisei tamanyan. All rights reserved.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-@objc public protocol PageTabViewControllerType: class {
+public protocol PageTabControllerType: class {
     /**
      Delegate
      */
-    var delegate: PageTabViewDelegate? { set get }
+    var delegate: PageTabDelegate? { set get }
 
     /**
      Count of all pages
@@ -43,4 +43,9 @@ import Foundation
      first page index
      */
     var firstPage: Int { get }
+
+    /**
+     Options
+     */
+    var options: PageTabConfigurable { get }
 }

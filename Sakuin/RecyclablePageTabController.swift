@@ -1,6 +1,6 @@
 //
-//  RecyclablePageTabViewController.swift
-//  PageTabViewController
+//  RecyclablePageTabController.swift
+//  PageTabController
 //
 //  Created by svpcadmin on 11/11/16.
 //  Copyright © 2016 tamanyan. All rights reserved.
@@ -8,16 +8,16 @@
 
 import UIKit
 
-class RecyclablePageTabViewController: UIViewController, PageTabViewControllerType {
-    public let controllers: [UIViewController]
+class RecyclablePageTabController: UIViewController, PageTabControllerType {
+    let controllers: [UIViewController]
 
-    public let menuTitles: [String]
+    let menuTitles: [String]
 
-    public var delegate: PageTabViewDelegate?
+    var delegate: PageTabDelegate?
 
-    public internal(set) var currentViewController: UIViewController!
+    internal(set) var currentViewController: UIViewController!
 
-    public fileprivate(set) var visibleControllers = [UIViewController]()
+    fileprivate(set) var visibleControllers = [UIViewController]()
 
     let contentScrollView: UIScrollView = {
         $0.isPagingEnabled = true
@@ -32,28 +32,39 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
 
     fileprivate var showingPages = Set<Int>()
 
-    fileprivate let pageTabView: PageTabView
+    fileprivate let menuView: MenuView
 
-    fileprivate let options: PageTabConfigurable
+    let options: PageTabConfigurable
 
     fileprivate var currentIndex: Int = 0 {
         didSet {
-            self.pageTabView.moveTo(page: self.currentIndex)
+            self.menuView.moveTo(page: self.currentIndex)
         }
-    }
-
-    /**
-     number of valid page
-     */
-    public var numberOfVisiblePages: Int {
-        return 3
     }
 
     /**
      Menu Options
      */
-    var menuOptions: MenuViewConfigurable {
+    fileprivate var menuOptions: MenuViewConfigurable {
         return self.options.menuOptions
+    }
+
+    fileprivate var centerContentOffsetX: CGFloat {
+        return CGFloat(self.numberOfVisiblePages / 2) * self.contentScrollView.frame.width
+    }
+
+    /**
+     number of valid page
+     */
+    var numberOfVisiblePages: Int {
+        return 3
+    }
+
+    /**
+     unit page size
+     */
+    var pageSize: CGSize {
+        return self.contentScrollView.frame.size
     }
 
     /**
@@ -61,17 +72,6 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
      */
     var pageCount: Int {
         return self.controllers.count
-    }
-
-    /**
-     unit page size
-     */
-    public var pageSize: CGSize {
-        return self.contentScrollView.frame.size
-    }
-
-    private var centerContentOffsetX: CGFloat {
-        return CGFloat(self.numberOfVisiblePages / 2) * self.contentScrollView.frame.width
     }
 
     /**
@@ -113,50 +113,49 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
         return 0
     }
 
-    public init(pageItems: [(viewController: UIViewController, menuTitle: String)], options: PageTabConfigurable) {
+    init(pageItems: [(viewController: UIViewController, menuTitle: String)], options: PageTabConfigurable) {
         self.controllers = pageItems.map { $0.viewController }
         self.menuTitles = pageItems.map { $0.menuTitle }
         self.options = options
         self.currentIndex = options.defaultPage
-        self.pageTabView = PageTabView(titles: self.menuTitles, options: self.options.menuOptions)
+        self.menuView = MenuView(titles: self.menuTitles, options: self.options.menuOptions)
 
         super.init(nibName: nil, bundle: nil)
 
         self.automaticallyAdjustsScrollViewInsets = false
         self.view.backgroundColor = options.backgroundColor
         self.view.addSubview(self.contentScrollView)
-        self.view.addSubview(self.pageTabView)
+        self.view.addSubview(self.menuView)
 
         // set layout of TabMenu and Content ScrollView
         self.layoutTabMenuView()
         self.layoutContentScrollView()
 
         self.setPageView(page: self.currentPage)
-        self.contentScrollView.delegate = self
 
-        self.pageTabView.menuSelectedBlock = { [unowned self] (prevPage: Int, nextPage: Int) in
+        self.menuView.menuSelectedBlock = { [unowned self] (prevPage: Int, nextPage: Int) in
             self.setPageView(page: nextPage)
             // will be hidden pages
             let hidingPages = self.showingPages.filter { $0 != nextPage }
             hidingPages.forEach {
-                self.delegate?.pageTabViewWillHidePage?(controller: self, page: $0)
+                self.delegate?.pageTabWillHidePage(controller: self, page: $0)
                 if let viewable = self.controllers[$0] as? PageTabChildDelegate {
-                    viewable.pageTabViewWillHidePage?()
+                    viewable.pageTabWillHidePage()
                 }
             }
             // will show pages
-            self.delegate?.pageTabViewWillShowPage?(controller: self, page: nextPage)
+            self.delegate?.pageTabWillShowPage(controller: self, page: nextPage)
             if let viewable = self.controllers[nextPage] as? PageTabChildDelegate {
-                viewable.pageTabViewWillShowPage?()
+                viewable.pageTabWillShowPage()
             }
             self.showingPages = [nextPage]
         }
-        self.pageTabView.moveToInitialPosition()
-        self.pageTabView.moveTo(page: self.currentPage)
+        self.menuView.moveToInitialPosition()
+        self.menuView.moveTo(page: self.currentPage)
 
         if self.currentPage < self.controllers.count {
             if let viewable = self.controllers[self.currentPage] as? PageTabChildDelegate {
-                viewable.pageTabViewWillShowPage?()
+                viewable.pageTabWillShowPage()
             }
             self.showingPages.insert(self.currentPage)
         }
@@ -172,6 +171,7 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
         self.contentScrollView.contentSize = CGSize(
             width: self.contentScrollView.frame.width * CGFloat(self.visibleControllers.count),
             height: self.contentScrollView.frame.height)
+        self.contentScrollView.delegate = nil
         if case .standard(_) = self.menuOptions.displayMode {
             if self.currentPage == self.lastPage {
                 self.contentScrollView.contentOffset.x = self.pageSize.width * 2
@@ -183,6 +183,7 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
         } else {
             self.setCenterContentOffset()
         }
+        self.contentScrollView.delegate = self
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -226,7 +227,7 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
     fileprivate func layoutContentScrollView() {
         self.contentScrollView.translatesAutoresizingMaskIntoConstraints = false
         if self.menuOptions.menuPosition == .top {
-            self.contentScrollView.topAnchor.constraint(equalTo: self.pageTabView.bottomAnchor).isActive = true
+            self.contentScrollView.topAnchor.constraint(equalTo: self.menuView.bottomAnchor).isActive = true
             self.contentScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
             self.contentScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
             self.contentScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -234,23 +235,25 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
             self.contentScrollView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
             self.contentScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
             self.contentScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-            self.contentScrollView.bottomAnchor.constraint(equalTo: self.pageTabView.topAnchor).isActive = true
+            self.contentScrollView.bottomAnchor.constraint(equalTo: self.menuView.topAnchor).isActive = true
         }
+        self.contentScrollView.layoutIfNeeded()
     }
 
     fileprivate func layoutTabMenuView() {
-        self.pageTabView.translatesAutoresizingMaskIntoConstraints = false
+        self.menuView.translatesAutoresizingMaskIntoConstraints = false
         if self.menuOptions.menuPosition == .top {
-            self.pageTabView.heightAnchor.constraint(equalToConstant: self.menuOptions.height).isActive = true
-            self.pageTabView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
-            self.pageTabView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-            self.pageTabView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+            self.menuView.heightAnchor.constraint(equalToConstant: self.menuOptions.height).isActive = true
+            self.menuView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
+            self.menuView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.menuView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         } else {
-            self.pageTabView.heightAnchor.constraint(equalToConstant: self.menuOptions.height).isActive = true
-            self.pageTabView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
-            self.pageTabView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-            self.pageTabView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+            self.menuView.heightAnchor.constraint(equalToConstant: self.menuOptions.height).isActive = true
+            self.menuView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
+            self.menuView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.menuView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         }
+        self.menuView.layoutIfNeeded()
     }
 
     fileprivate func constructPagingViewControllers() {
@@ -314,6 +317,7 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
             pageView.bottomAnchor.constraint(equalTo: self.contentScrollView.bottomAnchor).isActive = true
             pageView.widthAnchor.constraint(equalTo: self.contentScrollView.widthAnchor).isActive = true
             pageView.heightAnchor.constraint(equalTo: self.contentScrollView.heightAnchor).isActive = true
+            pageView.layoutIfNeeded()
         }
     }
 
@@ -346,7 +350,7 @@ class RecyclablePageTabViewController: UIViewController, PageTabViewControllerTy
 
 // MARK: - Scroll view delegate
 
-extension RecyclablePageTabViewController: UIScrollViewDelegate {
+extension RecyclablePageTabController: UIScrollViewDelegate {
     private var nextPageThresholdX: CGFloat {
         return (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 1.5
     }
@@ -370,17 +374,17 @@ extension RecyclablePageTabViewController: UIScrollViewDelegate {
         let intersection = nowShowingPages.intersection(self.showingPages)
         for i in nowShowingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabViewWillShowPage?(controller: self, page: i)
+                self.delegate?.pageTabWillShowPage(controller: self, page: i)
                 if let viewable = self.controllers[i] as? PageTabChildDelegate {
-                    viewable.pageTabViewWillShowPage?()
+                    viewable.pageTabWillShowPage()
                 }
             }
         }
         for i in self.showingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabViewWillHidePage?(controller: self, page: i)
+                self.delegate?.pageTabWillHidePage(controller: self, page: i)
                 if let viewable = self.controllers[i] as? PageTabChildDelegate {
-                    viewable.pageTabViewWillHidePage?()
+                    viewable.pageTabWillHidePage()
                 }
             }
         }

@@ -19,12 +19,12 @@ class FruitsTableViewController: UITableViewController, PageTabChildDelegate {
 
     // MARK: - PageTabChildDelegate
 
-    func pageTabViewWillShowPage() {
-        print("pageTabViewWillShowPage \(self.fruits[0])")
+    func pageTabWillShowPage() {
+        print("pageTabWillShowPage \(self.fruits[0])")
     }
 
-    func pageTabViewWillHidePage() {
-        print("pageTabViewWillHidePage \(self.fruits[0])")
+    func pageTabWillHidePage() {
+        print("pageTabWillHidePage \(self.fruits[0])")
     }
 
     // MARK: - UITableViewDataSource
@@ -48,7 +48,7 @@ class FruitsTableViewController: UITableViewController, PageTabChildDelegate {
     }
 }
 
-class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTabViewDelegate {
+class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTabDelegate {
     let titles = ["standard + fixwidth menu", "standard + flexible width menu", "standard + flexible width bottom menu", "infinite + flexible width menu"]
     let menuTitles: [UIColor: String] = [
         .green: "1st Green Menu",
@@ -73,7 +73,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "PageTabViewController"
+        self.navigationItem.title = "PageTabController"
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
@@ -102,7 +102,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
             let colors: [UIColor] = [.green, .gray, .red]
-            let pageTabController = PageTabViewController(pageItems: colors.map({ [unowned self] in
+            let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
                 vc.fruits = self.items[$0]!
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
@@ -112,7 +112,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 1 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
-            let pageTabController = PageTabViewController(pageItems: colors.map({ [unowned self] in
+            let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
                 vc.fruits = self.items[$0]!
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
@@ -122,7 +122,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 2 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
-            let pageTabController = PageTabViewController(pageItems: colors.map({ [unowned self] in
+            let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
                 vc.fruits = self.items[$0]!
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
@@ -132,7 +132,7 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 3 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
-            let pageTabController = PageTabViewController(pageItems: colors.map({ [unowned self] in
+            let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
                 vc.fruits = self.items[$0]!
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
@@ -143,16 +143,16 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
         }
     }
 
-    func showPageTabController(_ pageTabController: PageTabViewController) {
+    func showPageTabController(_ pageTabController: PageTabController) {
         self.navigationController?.pushViewController(pageTabController, animated: true)
     }
 
-    public func pageTabViewWillHidePage(controller: PageTabViewControllerType, page: Int) {
-        print("hidePage \(page)")
+    public func pageTabWillHidePage(controller: PageTabControllerType, page: Int) {
+        // print("hidePage \(page)")
     }
 
-    public func pageTabViewWillShowPage(controller: PageTabViewControllerType, page: Int) {
-        print("showPage \(page)")
+    public func pageTabWillShowPage(controller: PageTabControllerType, page: Int) {
+        // print("showPage \(page)")
     }
 }
 

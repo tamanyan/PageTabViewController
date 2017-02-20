@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let navController = UINavigationController(rootViewController: ViewController())
-        navController.title = "PageTabViewController"
+        navController.title = "PageTabController"
         self.window?.rootViewController = navController
         self.window?.makeKeyAndVisible()
         return true

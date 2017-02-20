@@ -1,6 +1,6 @@
 //
 //  PageTabView.swift
-//  PageTabViewController
+//  PageTabController
 //
 //  Created by svpcadmin on 11/11/16.
 //  Copyright © 2016 tamanyan. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PageTabView: UIView {
+class MenuView: UIView {
     lazy fileprivate var roundRectView: UIView = {
         $0.isUserInteractionEnabled = true
         return $0
@@ -184,7 +184,7 @@ class PageTabView: UIView {
     }
 }
 
-extension PageTabView: UICollectionViewDataSource {
+extension MenuView: UICollectionViewDataSource {
     fileprivate var dummyCount: Int {
         if case .infinite(_) = self.options.displayMode {
             // dummy count
@@ -216,7 +216,7 @@ extension PageTabView: UICollectionViewDataSource {
     }
 }
 
-extension PageTabView: UICollectionViewDelegateFlowLayout {
+extension MenuView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = self.menuItemWidth
         if width <= 0 {
@@ -243,7 +243,7 @@ extension PageTabView: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension PageTabView: UICollectionViewDelegate {
+extension MenuView: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard case .infinite(_) = self.options.displayMode else {
             return
