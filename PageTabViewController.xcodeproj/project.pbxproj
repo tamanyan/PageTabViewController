@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C510DE2E1E5AE81E00441E01 /* PageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C510DE2D1E5AE81E00441E01 /* PageTabViewController.swift */; };
+		C510DE301E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C510DE2F1E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift */; };
 		C51C82571DF805510075B6DC /* PageTabViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */; };
 		C51C82591DF8147B0075B6DC /* PageTabChildViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C82581DF8147B0075B6DC /* PageTabChildViewable.swift */; };
 		C5D3695D1DD58CA0005D23EE /* PageTabViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C5D369A51DD58F0A005D23EE /* PageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */; };
+		C5D369A51DD58F0A005D23EE /* RecyclablePageTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A41DD58F0A005D23EE /* RecyclablePageTabViewController.swift */; };
 		C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */; };
 		C5D369A91DD590C6005D23EE /* MenuViewConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */; };
 		C5D369B01DD5A73B005D23EE /* PageTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D369AF1DD5A73B005D23EE /* PageTabView.swift */; };
@@ -18,12 +20,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C510DE2D1E5AE81E00441E01 /* PageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewController.swift; sourceTree = "<group>"; };
+		C510DE2F1E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonRecyclablePageTabViewController.swift; sourceTree = "<group>"; };
 		C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewDelegate.swift; sourceTree = "<group>"; };
 		C51C82581DF8147B0075B6DC /* PageTabChildViewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabChildViewable.swift; sourceTree = "<group>"; };
 		C5D369581DD58CA0005D23EE /* PageTabViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PageTabViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5D3695B1DD58CA0005D23EE /* PageTabViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageTabViewController.h; sourceTree = "<group>"; };
 		C5D3695C1DD58CA0005D23EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabViewController.swift; sourceTree = "<group>"; };
+		C5D369A41DD58F0A005D23EE /* RecyclablePageTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecyclablePageTabViewController.swift; sourceTree = "<group>"; };
 		C5D369A61DD58FF4005D23EE /* PageTabConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabConfigurable.swift; sourceTree = "<group>"; };
 		C5D369A81DD590C6005D23EE /* MenuViewConfigurable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewConfigurable.swift; sourceTree = "<group>"; };
 		C5D369AF1DD5A73B005D23EE /* PageTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTabView.swift; sourceTree = "<group>"; };
@@ -60,7 +64,9 @@
 		C5D3695A1DD58CA0005D23EE /* PageTabViewController */ = {
 			isa = PBXGroup;
 			children = (
-				C5D369A41DD58F0A005D23EE /* PageTabViewController.swift */,
+				C510DE2D1E5AE81E00441E01 /* PageTabViewController.swift */,
+				C5D369A41DD58F0A005D23EE /* RecyclablePageTabViewController.swift */,
+				C510DE2F1E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift */,
 				C5D369AF1DD5A73B005D23EE /* PageTabView.swift */,
 				C5D369B11DD5AB97005D23EE /* PageTabCollectionCell.swift */,
 				C51C82561DF805510075B6DC /* PageTabViewDelegate.swift */,
@@ -155,7 +161,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5D369A91DD590C6005D23EE /* MenuViewConfigurable.swift in Sources */,
-				C5D369A51DD58F0A005D23EE /* PageTabViewController.swift in Sources */,
+				C510DE2E1E5AE81E00441E01 /* PageTabViewController.swift in Sources */,
+				C5D369A51DD58F0A005D23EE /* RecyclablePageTabViewController.swift in Sources */,
+				C510DE301E5AEB9A00441E01 /* NonRecyclablePageTabViewController.swift in Sources */,
 				C51C82571DF805510075B6DC /* PageTabViewDelegate.swift in Sources */,
 				C5D369A71DD58FF4005D23EE /* PageTabConfigurable.swift in Sources */,
 				C51C82591DF8147B0075B6DC /* PageTabChildViewable.swift in Sources */,

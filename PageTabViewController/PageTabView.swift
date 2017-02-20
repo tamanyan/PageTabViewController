@@ -162,6 +162,7 @@ class PageTabView: UIView {
             size: CGSize(width: 100, height: self.options.height - padding * 2))
         self.roundRectView.layer.cornerRadius = 5
         self.roundRectView.backgroundColor = self.options.selectedBackgroundColor
+        self.roundRectView.isHidden = self.titles.isEmpty
         self.collectionView.addSubview(self.roundRectView)
     }
 
