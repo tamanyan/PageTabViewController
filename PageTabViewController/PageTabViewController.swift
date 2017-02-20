@@ -153,10 +153,13 @@ open class PageTabViewController: UIViewController {
         }
         self.pageTabView.moveToInitialPosition()
         self.pageTabView.moveTo(page: self.currentPage)
-        if let viewable = self.controllers[self.currentPage] as? PageTabChildManageable {
-            viewable.pageTabViewWillShowPage?()
+
+        if self.currentPage < self.controllers.count {
+            if let viewable = self.controllers[self.currentPage] as? PageTabChildManageable {
+                viewable.pageTabViewWillShowPage?()
+            }
+            self.showingPages.insert(self.currentPage)
         }
-        self.showingPages.insert(self.currentPage)
     }
 
     required public init?(coder aDecoder: NSCoder) {
