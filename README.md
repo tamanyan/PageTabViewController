@@ -5,6 +5,11 @@ Sakuin
 
 Custumizable Page Tab View Controller in Swift
 
+Features
+
+- Infinite Scroll Page/Menu
+- Top/Bottom Menu
+- Custom Color Menu
 
 ## Requirements
 
