@@ -65,40 +65,12 @@ class PageTabView: UIView {
         self.addSubview(self.collectionView)
         self.setupRoundRectView()
 
-        let top = NSLayoutConstraint(item: self.collectionView,
-            attribute: .top,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .top,
-            multiplier: 1.0,
-            constant: 0.0)
-
-        let left = NSLayoutConstraint(item: self.collectionView,
-            attribute: .leading,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .leading,
-            multiplier: 1.0,
-            constant: 0.0)
-
-        let bottom = NSLayoutConstraint (item: self,
-            attribute: .bottom,
-            relatedBy: .equal,
-            toItem: self.collectionView,
-            attribute: .bottom,
-            multiplier: 1.0,
-            constant: 0.0)
-
-        let right = NSLayoutConstraint(item: self,
-            attribute: .trailing,
-            relatedBy: .equal,
-            toItem: self.collectionView,
-            attribute: .trailing,
-            multiplier: 1.0,
-            constant: 0.0)
-
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.addConstraints([top, left, bottom, right])
+        self.topAnchor.constraint(equalTo: self.collectionView.topAnchor).isActive = true
+        self.leftAnchor.constraint(equalTo: self.collectionView.leftAnchor).isActive = true
+        self.rightAnchor.constraint(equalTo: self.collectionView.rightAnchor).isActive = true
+        self.bottomAnchor.constraint(equalTo: self.collectionView.bottomAnchor).isActive = true
     }
 
     override func layoutIfNeeded() {

@@ -226,150 +226,30 @@ open class PageTabViewController: UIViewController {
     fileprivate func layoutContentScrollView() {
         self.contentScrollView.translatesAutoresizingMaskIntoConstraints = false
         if self.menuOptions.menuPosition == .top {
-            self.view.addConstraints([
-                // top
-                NSLayoutConstraint(
-                    item: self.contentScrollView,
-                    attribute: .top,
-                    relatedBy: .equal,
-                    toItem: self.pageTabView,
-                    attribute: .bottom,
-                    multiplier:1.0,
-                    constant: 0.0),
-                // left
-                NSLayoutConstraint(
-                    item: self.contentScrollView,
-                    attribute: .leading,
-                    relatedBy: .equal,
-                    toItem: self.view,
-                    attribute: .leading,
-                    multiplier: 1.0,
-                    constant: 0),
-                // right
-                NSLayoutConstraint(
-                    item: self.view,
-                    attribute: .trailing,
-                    relatedBy: .equal,
-                    toItem: self.contentScrollView,
-                    attribute: .trailing,
-                    multiplier: 1.0,
-                    constant: 0),
-                // bottom
-                NSLayoutConstraint(
-                    item: self.view,
-                    attribute: .bottom,
-                    relatedBy: .equal,
-                    toItem: self.contentScrollView,
-                    attribute: .bottom,
-                    multiplier: 1.0,
-                    constant: 0),
-                ])
+            self.contentScrollView.topAnchor.constraint(equalTo: self.pageTabView.bottomAnchor).isActive = true
+            self.contentScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.contentScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+            self.contentScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         } else {
-            self.view.addConstraints([
-                // top
-                NSLayoutConstraint(
-                    item: self.contentScrollView,
-                    attribute: .top,
-                    relatedBy: .equal,
-                    toItem: topLayoutGuide,
-                    attribute: .bottom,
-                    multiplier:1.0,
-                    constant: 0.0),
-                // left
-                NSLayoutConstraint(
-                    item: self.contentScrollView,
-                    attribute: .leading,
-                    relatedBy: .equal,
-                    toItem: self.view,
-                    attribute: .leading,
-                    multiplier: 1.0,
-                    constant: 0),
-                // right
-                NSLayoutConstraint(
-                    item: self.view,
-                    attribute: .trailing,
-                    relatedBy: .equal,
-                    toItem: self.contentScrollView,
-                    attribute: .trailing,
-                    multiplier: 1.0,
-                    constant: 0),
-                // bottom
-                NSLayoutConstraint(
-                    item: self.contentScrollView,
-                    attribute: .bottom,
-                    relatedBy: .equal,
-                    toItem: self.pageTabView,
-                    attribute: .top,
-                    multiplier: 1.0,
-                    constant: 0),
-                ])
+            self.contentScrollView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
+            self.contentScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.contentScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+            self.contentScrollView.bottomAnchor.constraint(equalTo: self.pageTabView.topAnchor).isActive = true
         }
     }
 
     fileprivate func layoutTabMenuView() {
         self.pageTabView.translatesAutoresizingMaskIntoConstraints = false
         if self.menuOptions.menuPosition == .top {
-            self.view.addConstraints([
-                NSLayoutConstraint(item: self.pageTabView,
-                                   attribute: .height,
-                                   relatedBy: .equal,
-                                   toItem: nil,
-                                   attribute: .height,
-                                   multiplier: 1.0,
-                                   constant: self.menuOptions.height),
-                NSLayoutConstraint(item: self.pageTabView,
-                                   attribute: .top,
-                                   relatedBy: .equal,
-                                   toItem: topLayoutGuide,
-                                   attribute: .bottom,
-                                   multiplier:1.0,
-                                   constant: 0.0),
-                NSLayoutConstraint(item: self.pageTabView,
-                                   attribute: .leading,
-                                   relatedBy: .equal,
-                                   toItem: view,
-                                   attribute: .leading,
-                                   multiplier: 1.0,
-                                   constant: 0.0),
-                NSLayoutConstraint(item: view,
-                                   attribute: .trailing,
-                                   relatedBy: .equal,
-                                   toItem: self.pageTabView,
-                                   attribute: .trailing,
-                                   multiplier: 1.0,
-                                   constant: 0.0),
-                ])
+            self.pageTabView.heightAnchor.constraint(equalToConstant: self.menuOptions.height).isActive = true
+            self.pageTabView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
+            self.pageTabView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.pageTabView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         } else {
-            self.view.addConstraints([
-                NSLayoutConstraint(item: self.pageTabView,
-                                   attribute: .height,
-                                   relatedBy: .equal,
-                                   toItem: nil,
-                                   attribute: .height,
-                                   multiplier: 1.0,
-                                   constant: self.menuOptions.height),
-                NSLayoutConstraint(item: self.pageTabView,
-                                   attribute: .bottom,
-                                   relatedBy: .equal,
-                                   toItem: bottomLayoutGuide,
-                                   attribute: .bottom,
-                                   multiplier:1.0,
-                                   constant: 0.0),
-                NSLayoutConstraint(item: self.pageTabView,
-                                   attribute: .leading,
-                                   relatedBy: .equal,
-                                   toItem: view,
-                                   attribute: .leading,
-                                   multiplier: 1.0,
-                                   constant: 0.0),
-                NSLayoutConstraint(item: view,
-                                   attribute: .trailing,
-                                   relatedBy: .equal,
-                                   toItem: self.pageTabView,
-                                   attribute: .trailing,
-                                   multiplier: 1.0,
-                                   constant: 0.0),
-                ])
+            self.pageTabView.heightAnchor.constraint(equalToConstant: self.menuOptions.height).isActive = true
+            self.pageTabView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
+            self.pageTabView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.pageTabView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         }
     }
 
@@ -416,96 +296,24 @@ open class PageTabViewController: UIViewController {
 
             switch index {
             case self.previousPage:
-                self.contentScrollView.addConstraints([
-                    // left
-                    NSLayoutConstraint(
-                        item: pageView,
-                        attribute: .leading,
-                        relatedBy: .equal,
-                        toItem: self.contentScrollView,
-                        attribute: .leading,
-                        multiplier: 1.0,
-                        constant: 0),
-                    ])
+                pageView.leftAnchor.constraint(equalTo: self.contentScrollView.leftAnchor).isActive = true
                 break
             case self.currentPage:
                 guard let previousPagingView = self.controllers[self.previousPage].view,
                     let nextPagingView = self.controllers[self.nextPage].view else { continue }
 
-                self.contentScrollView.addConstraints([
-                    // left
-                    NSLayoutConstraint(
-                        item: previousPagingView,
-                        attribute: .trailing,
-                        relatedBy: .equal,
-                        toItem: pageView,
-                        attribute: .leading,
-                        multiplier: 1.0,
-                        constant: 0),
-                    // right
-                    NSLayoutConstraint(
-                        item: pageView,
-                        attribute: .trailing,
-                        relatedBy: .equal,
-                        toItem: nextPagingView,
-                        attribute: .leading,
-                        multiplier: 1.0,
-                        constant: 0),
-                    ])
+                pageView.leftAnchor.constraint(equalTo: previousPagingView.rightAnchor).isActive = true
+                pageView.rightAnchor.constraint(equalTo: nextPagingView.leftAnchor).isActive = true
                 break
             case self.nextPage:
-                self.contentScrollView.addConstraints([
-                    // right
-                    NSLayoutConstraint(
-                        item: pageView,
-                        attribute: .trailing,
-                        relatedBy: .equal,
-                        toItem: self.contentScrollView,
-                        attribute: .trailing,
-                        multiplier: 1.0,
-                        constant: 0),
-                    ])
+                pageView.rightAnchor.constraint(equalTo: self.contentScrollView.rightAnchor).isActive = true
                 break
             default: break
             }
-            self.contentScrollView.addConstraints([
-                    // top
-                    NSLayoutConstraint(
-                        item: pageView,
-                        attribute: .top,
-                        relatedBy: .equal,
-                        toItem: self.contentScrollView,
-                        attribute: .top,
-                        multiplier:1.0,
-                        constant: 0.0),
-                    // bottom
-                    NSLayoutConstraint(
-                        item: self.contentScrollView,
-                        attribute: .bottom,
-                        relatedBy: .equal,
-                        toItem: pageView,
-                        attribute: .bottom,
-                        multiplier: 1.0,
-                        constant: 0),
-                    // width
-                    NSLayoutConstraint(
-                        item: pageView,
-                        attribute: .width,
-                        relatedBy: .equal,
-                        toItem: self.contentScrollView,
-                        attribute: .width,
-                        multiplier: 1.0,
-                        constant: 0),
-                    // height
-                    NSLayoutConstraint(
-                        item: pageView,
-                        attribute: .height,
-                        relatedBy: .equal,
-                        toItem: self.contentScrollView,
-                        attribute: .height,
-                        multiplier: 1.0,
-                        constant: 0),
-            ])
+            pageView.topAnchor.constraint(equalTo: self.contentScrollView.topAnchor).isActive = true
+            pageView.bottomAnchor.constraint(equalTo: self.contentScrollView.bottomAnchor).isActive = true
+            pageView.widthAnchor.constraint(equalTo: self.contentScrollView.widthAnchor).isActive = true
+            pageView.heightAnchor.constraint(equalTo: self.contentScrollView.heightAnchor).isActive = true
         }
     }
 
