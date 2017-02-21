@@ -3,7 +3,7 @@ Sakuin
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/hsylife/SwiftyPickerPopover)
 
-Custumizable Page Tab View Controller in Swift
+Customizable Page Tab ViewController in Swift
 
 Features
 
@@ -19,6 +19,8 @@ This framework is inspired by [kitasuke/PagingMenuController](https://github.com
 - Swift 3
 
 ## Sample
+
+Define Child View Controller to be displayed in Tab.
 
 ```swift
 import Sakuin
@@ -63,6 +65,8 @@ class FruitsTableViewController: UITableViewController, Pageable {
     }
 }
 ```
+
+Define Custom Settings for PageTabController.
 
 ```swift
 import Sakuin
@@ -109,26 +113,28 @@ struct StandardFixedWidthMenuOptions: PageTabConfigurable {
 }
 ```
 
+Setup PageTabController and Child View Controllers.
+
 ```swift
 let menuTitles: [UIColor: String] = [
-		.green: "1st Green Menu",
-		.gray: "2nd Gray Menu",
-		.red: "3rd Red Menu",
+    .green: "1st Green Menu",
+    .gray: "2nd Gray Menu",
+    .red: "3rd Red Menu",
 ]
 
 let items: [UIColor: [String]] = [
-		.green: ["1st", "Apple", "Apricot", "Avocado", "Banana", "Blackberry", "Blueberry", "Cantaloupe", "Cherry", "Cherimoya"],
-		.gray: ["2nd", "Clementine", "Coconut", "Cranberry", "Cucumber", "Custard apple", "Damson", "Date", "Dragonfruit", "Durian",
-						"Elderberry", "Feijoa", "Fig", "Grape", "Grapefruit", "Guava", "Udara", "Honeyberry", "Huckleberry", "Jabuticaba",
-						"Jackfruit", "Juniper berry", "Kiwi fruit", "Lemon", "Lime", "Lychee", "Mandarine",],
-		.red: ["3rd", "Mango", "Marionberry"],
+    .green: ["1st", "Apple", "Apricot", "Avocado", "Banana", "Blackberry", "Blueberry", "Cantaloupe", "Cherry", "Cherimoya"],
+    .gray: ["2nd", "Clementine", "Coconut", "Cranberry", "Cucumber", "Custard apple", "Damson", "Date", "Dragonfruit", "Durian",
+            "Elderberry", "Feijoa", "Fig", "Grape", "Grapefruit", "Guava", "Udara", "Honeyberry", "Huckleberry", "Jabuticaba",
+            "Jackfruit", "Juniper berry", "Kiwi fruit", "Lemon", "Lime", "Lychee", "Mandarine",],
+    .red: ["3rd", "Mango", "Marionberry"],
 ]
 
 let colors: [UIColor] = [.green, .gray, .red]
 
 let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
-		let vc = FruitsTableViewController()
-		vc.fruits = items[$0]!
-		return (viewController: vc, menuTitle: menuTitles[$0]!)
+    let vc = FruitsTableViewController()
+    vc.fruits = items[$0]!
+    return (viewController: vc, menuTitle: menuTitles[$0]!)
 }), options: StandardFixedWidthMenuOptions())
 ```
