@@ -1,6 +1,6 @@
 //
 //  PageTabView.swift
-//  PageTabController
+//  Sakuin
 //
 //  Created by svpcadmin on 11/11/16.
 //  Copyright © 2016 tamanyan. All rights reserved.

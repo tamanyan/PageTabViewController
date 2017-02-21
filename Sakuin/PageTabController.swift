@@ -1,6 +1,6 @@
 //
-//  PageTabController.swift
-//  PageTabController
+//  Sakuin.swift
+//  Sakuin
 //
 //  Created by svpcadmin on 2/20/17.
 //  Copyright © 2017 tamanyan. All rights reserved.
@@ -10,21 +10,18 @@ import Foundation
 import UIKit
 
 open class PageTabController: UIViewController {
+    /**
+     for more than 3 pages
+     */
     fileprivate var recyclablePageTabController: RecyclablePageTabController?
 
+    /**
+     for less than 2 pages
+     */
     fileprivate var nonRecyclablePageTabController: NonRecyclablePageTabController?
 
     fileprivate var pageTabController: PageTabControllerType? {
         return self.recyclablePageTabController ?? self.nonRecyclablePageTabController
-    }
-
-    public var delegate: PageTabDelegate? {
-        set {
-            self.pageTabController?.delegate = newValue
-        }
-        get {
-            return self.pageTabController?.delegate
-        }
     }
 
     public init(pageItems: [(viewController: UIViewController, menuTitle: String)], options: PageTabConfigurable) {

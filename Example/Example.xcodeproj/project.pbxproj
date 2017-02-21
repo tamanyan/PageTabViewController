@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		23CD01CF1E5B315A0050B26D /* Sakuin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CD01CB1E5B31490050B26D /* Sakuin.framework */; };
-		23CD01D11E5B31D50050B26D /* Sakuin.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23CD01CB1E5B31490050B26D /* Sakuin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C510DE451E5BDFB000441E01 /* Sakuin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C510DE441E5BDFB000441E01 /* Sakuin.framework */; };
+		C510DE471E5BDFB600441E01 /* Sakuin.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C510DE441E5BDFB000441E01 /* Sakuin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C529166C1DDDA53F0052467D /* StandardFixedWidthMenuOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C529166B1DDDA53F0052467D /* StandardFixedWidthMenuOptions.swift */; };
 		C529166E1DDDA5B40052467D /* StandardFlexibleWidthMenuOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C529166D1DDDA5B40052467D /* StandardFlexibleWidthMenuOptions.swift */; };
 		C52916701DDDA5EC0052467D /* InfiniteFlexibleWidthMenuOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C529166F1DDDA5EC0052467D /* InfiniteFlexibleWidthMenuOptions.swift */; };
@@ -20,13 +20,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		23CD01D21E5B31D50050B26D /* Embed Frameworks */ = {
+		C510DE481E5BDFB600441E01 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				23CD01D11E5B31D50050B26D /* Sakuin.framework in Embed Frameworks */,
+				C510DE471E5BDFB600441E01 /* Sakuin.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -34,7 +34,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		23CD01CB1E5B31490050B26D /* Sakuin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sakuin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Sakuin-ftmjwftrmdfechhkkfxylcvwlyoa/Build/Products/Debug-iphonesimulator/Sakuin.framework"; sourceTree = "<group>"; };
+		C510DE441E5BDFB000441E01 /* Sakuin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sakuin.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Sakuin-fsmrgknkfcprzucowzdglnnaekny/Build/Products/Debug-iphoneos/Sakuin.framework"; sourceTree = "<group>"; };
 		C529166B1DDDA53F0052467D /* StandardFixedWidthMenuOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardFixedWidthMenuOptions.swift; sourceTree = "<group>"; };
 		C529166D1DDDA5B40052467D /* StandardFlexibleWidthMenuOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardFlexibleWidthMenuOptions.swift; sourceTree = "<group>"; };
 		C529166F1DDDA5EC0052467D /* InfiniteFlexibleWidthMenuOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteFlexibleWidthMenuOptions.swift; sourceTree = "<group>"; };
@@ -53,17 +53,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23CD01CF1E5B315A0050B26D /* Sakuin.framework in Frameworks */,
+				C510DE451E5BDFB000441E01 /* Sakuin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		23CD01CA1E5B31490050B26D /* Frameworks */ = {
+		C510DE431E5BDFAF00441E01 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				23CD01CB1E5B31490050B26D /* Sakuin.framework */,
+				C510DE441E5BDFB000441E01 /* Sakuin.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -73,7 +73,7 @@
 			children = (
 				C5D3696E1DD58CDC005D23EE /* Example */,
 				C5D3696D1DD58CDC005D23EE /* Products */,
-				23CD01CA1E5B31490050B26D /* Frameworks */,
+				C510DE431E5BDFAF00441E01 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,7 +112,7 @@
 				C5D369681DD58CDC005D23EE /* Sources */,
 				C5D369691DD58CDC005D23EE /* Frameworks */,
 				C5D3696A1DD58CDC005D23EE /* Resources */,
-				23CD01D21E5B31D50050B26D /* Embed Frameworks */,
+				C510DE481E5BDFB600441E01 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

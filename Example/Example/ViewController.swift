@@ -9,7 +9,7 @@
 import Sakuin
 import UIKit
 
-class FruitsTableViewController: UITableViewController, PageTabChildDelegate {
+class FruitsTableViewController: UITableViewController, Pageable {
     var fruits = [String]()
 
     override func viewDidLoad() {
@@ -17,13 +17,13 @@ class FruitsTableViewController: UITableViewController, PageTabChildDelegate {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
 
-    // MARK: - PageTabChildDelegate
+    // MARK: - Pageable
 
-    func pageTabWillShowPage() {
+    func pageTabWillShowPage(controller: UIViewController) {
         print("pageTabWillShowPage \(self.fruits[0])")
     }
 
-    func pageTabWillHidePage() {
+    func pageTabWillHidePage(controller: UIViewController) {
         print("pageTabWillHidePage \(self.fruits[0])")
     }
 
@@ -48,7 +48,7 @@ class FruitsTableViewController: UITableViewController, PageTabChildDelegate {
     }
 }
 
-class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTabDelegate {
+class ViewController: UITableViewController, UIGestureRecognizerDelegate {
     let titles = ["standard + fixwidth menu", "standard + flexible width menu", "standard + flexible width bottom menu", "infinite + flexible width menu"]
     let menuTitles: [UIColor: String] = [
         .green: "1st Green Menu",
@@ -108,7 +108,6 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
             }), options: StandardFixedWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
-            pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 1 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
@@ -118,7 +117,6 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
             }), options: StandardFlexibleWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
-            pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 2 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
@@ -128,7 +126,6 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
             }), options: StandardFlexibleWidthBottomMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
-            pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 3 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
@@ -138,21 +135,12 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate, PageTa
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
             }), options: InfiniteFlexibleWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
-            pageTabController.delegate = self
             self.showPageTabController(pageTabController)
         }
     }
 
     func showPageTabController(_ pageTabController: PageTabController) {
         self.navigationController?.pushViewController(pageTabController, animated: true)
-    }
-
-    public func pageTabWillHidePage(controller: PageTabControllerType, page: Int) {
-        // print("hidePage \(page)")
-    }
-
-    public func pageTabWillShowPage(controller: PageTabControllerType, page: Int) {
-        // print("showPage \(page)")
     }
 }
 

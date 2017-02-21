@@ -1,6 +1,6 @@
 //
 //  NonRecyclablePageTabController.swift
-//  PageTabController
+//  Sakuin
 //
 //  Created by svpcadmin on 2/20/17.
 //  Copyright © 2017 tamanyan. All rights reserved.
@@ -12,8 +12,6 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
     let controllers: [UIViewController]
 
     let menuTitles: [String]
-
-    var delegate: PageTabDelegate?
 
     internal(set) var currentViewController: UIViewController!
 
@@ -84,10 +82,16 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
         return self.currentPage + 1
     }
 
+    /**
+     last page index
+     */
     var lastPage: Int {
         return self.controllers.count - 1
     }
 
+    /**
+     first page index
+     */
     var firstPage: Int {
         return 0
     }
@@ -118,15 +122,13 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
             // will be hidden pages
             let hidingPages = self.showingPages.filter { $0 != nextPage }
             hidingPages.forEach {
-                self.delegate?.pageTabWillHidePage(controller: self, page: $0)
-                if let viewable = self.controllers[$0] as? PageTabChildDelegate {
-                    viewable.pageTabWillHidePage()
+                if let child = self.controllers[$0] as? Pageable {
+                    child.pageTabWillHidePage(controller: self.controllers[$0])
                 }
             }
             // will show pages
-            self.delegate?.pageTabWillShowPage(controller: self, page: nextPage)
-            if let viewable = self.controllers[nextPage] as? PageTabChildDelegate {
-                viewable.pageTabWillShowPage()
+            if let child = self.controllers[nextPage] as? Pageable {
+                child.pageTabWillShowPage(controller: self.controllers[nextPage])
             }
             self.showingPages = [nextPage]
         }
@@ -134,8 +136,8 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
         self.menuView.moveTo(page: self.currentPage)
 
         if self.currentPage < self.controllers.count {
-            if let viewable = self.controllers[self.currentPage] as? PageTabChildDelegate {
-                viewable.pageTabWillShowPage()
+            if let child = self.controllers[self.currentPage] as? Pageable {
+                child.pageTabWillShowPage(controller: self.controllers[self.currentPage])
             }
             self.showingPages.insert(self.currentPage)
         }
@@ -284,20 +286,19 @@ extension NonRecyclablePageTabController: UIScrollViewDelegate {
                 nowShowingPages.insert(i)
             }
         }
+
         let intersection = nowShowingPages.intersection(self.showingPages)
         for i in nowShowingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabWillShowPage(controller: self, page: i)
-                if let viewable = self.controllers[i] as? PageTabChildDelegate {
-                    viewable.pageTabWillShowPage()
+                if let child = self.controllers[i] as? Pageable {
+                    child.pageTabWillShowPage(controller: self.controllers[i])
                 }
             }
         }
         for i in self.showingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabWillHidePage(controller: self, page: i)
-                if let viewable = self.controllers[i] as? PageTabChildDelegate {
-                    viewable.pageTabWillHidePage()
+                if let child = self.controllers[i] as? Pageable {
+                    child.pageTabWillHidePage(controller: self.controllers[i])
                 }
             }
         }
@@ -305,16 +306,15 @@ extension NonRecyclablePageTabController: UIScrollViewDelegate {
 
         let minimumVisibleX = visibleBounds.minX
         let maximumVisibleX = visibleBounds.maxX
+
         if self.lastPage == self.currentPage &&
             maximumVisibleX <= (self.contentScrollView.contentSize.width / 2) + self.pageSize.width * 0.5 {
 
             self.updatePage(currentPage: self.previousPage)
-            return
         } else if self.firstPage == self.currentPage &&
             minimumVisibleX >= (self.contentScrollView.contentSize.width / 2) - self.pageSize.width * 0.5 {
 
             self.updatePage(currentPage: self.nextPage)
-            return
         }
     }
 }

@@ -1,6 +1,6 @@
 //
 //  RecyclablePageTabController.swift
-//  PageTabController
+//  Sakuin
 //
 //  Created by svpcadmin on 11/11/16.
 //  Copyright © 2016 tamanyan. All rights reserved.
@@ -12,8 +12,6 @@ class RecyclablePageTabController: UIViewController, PageTabControllerType {
     let controllers: [UIViewController]
 
     let menuTitles: [String]
-
-    var delegate: PageTabDelegate?
 
     internal(set) var currentViewController: UIViewController!
 
@@ -105,10 +103,16 @@ class RecyclablePageTabController: UIViewController, PageTabControllerType {
         }
     }
 
+    /**
+     last page index
+     */
     var lastPage: Int {
         return self.controllers.count - 1
     }
 
+    /**
+     first page index
+     */
     var firstPage: Int {
         return 0
     }
@@ -138,15 +142,13 @@ class RecyclablePageTabController: UIViewController, PageTabControllerType {
             // will be hidden pages
             let hidingPages = self.showingPages.filter { $0 != nextPage }
             hidingPages.forEach {
-                self.delegate?.pageTabWillHidePage(controller: self, page: $0)
-                if let viewable = self.controllers[$0] as? PageTabChildDelegate {
-                    viewable.pageTabWillHidePage()
+                if let child = self.controllers[$0] as? Pageable {
+                    child.pageTabWillHidePage(controller: self.controllers[$0])
                 }
             }
             // will show pages
-            self.delegate?.pageTabWillShowPage(controller: self, page: nextPage)
-            if let viewable = self.controllers[nextPage] as? PageTabChildDelegate {
-                viewable.pageTabWillShowPage()
+            if let child = self.controllers[nextPage] as? Pageable {
+                child.pageTabWillShowPage(controller: self.controllers[nextPage])
             }
             self.showingPages = [nextPage]
         }
@@ -154,8 +156,8 @@ class RecyclablePageTabController: UIViewController, PageTabControllerType {
         self.menuView.moveTo(page: self.currentPage)
 
         if self.currentPage < self.controllers.count {
-            if let viewable = self.controllers[self.currentPage] as? PageTabChildDelegate {
-                viewable.pageTabWillShowPage()
+            if let child = self.controllers[self.currentPage] as? Pageable {
+                child.pageTabWillShowPage(controller: self.controllers[self.currentPage])
             }
             self.showingPages.insert(self.currentPage)
         }
@@ -371,20 +373,19 @@ extension RecyclablePageTabController: UIScrollViewDelegate {
                 nowShowingPages.insert(i)
             }
         }
+
         let intersection = nowShowingPages.intersection(self.showingPages)
         for i in nowShowingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabWillShowPage(controller: self, page: i)
-                if let viewable = self.controllers[i] as? PageTabChildDelegate {
-                    viewable.pageTabWillShowPage()
+                if let child = self.controllers[i] as? Pageable {
+                    child.pageTabWillShowPage(controller: self.controllers[i])
                 }
             }
         }
         for i in self.showingPages {
             if (intersection.contains(i) == false) {
-                self.delegate?.pageTabWillHidePage(controller: self, page: i)
-                if let viewable = self.controllers[i] as? PageTabChildDelegate {
-                    viewable.pageTabWillHidePage()
+                if let child = self.controllers[i] as? Pageable {
+                    child.pageTabWillHidePage(controller: self.controllers[i])
                 }
             }
         }

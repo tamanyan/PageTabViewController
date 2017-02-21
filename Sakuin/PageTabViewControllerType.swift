@@ -1,6 +1,6 @@
 //
-//  PageTabControllerType.swift
-//  PageTabController
+//  SakuinType.swift
+//  Sakuin
 //
 //  Created by Tamanyan on 2/20/29 H.
 //  Copyright © 29 Heisei tamanyan. All rights reserved.
@@ -9,11 +9,6 @@
 import Foundation
 
 public protocol PageTabControllerType: class {
-    /**
-     Delegate
-     */
-    var delegate: PageTabDelegate? { set get }
-
     /**
      Count of all pages
      */
