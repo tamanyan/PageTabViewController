@@ -60,6 +60,13 @@ open class PageTabController: UIViewController {
     }
 
     /**
+     child view controllers
+     */
+    public var controllers: [UIViewController] {
+        return self.pageTabController?.controllers ?? []
+    }
+
+    /**
      first page index
      */
     public var firstPage: Int {

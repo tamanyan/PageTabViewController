@@ -6,7 +6,7 @@
 //  Copyright © 29 Heisei tamanyan. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public protocol PageTabControllerType: class {
     /**
@@ -43,6 +43,11 @@ public protocol PageTabControllerType: class {
      Options
      */
     var options: PageTabConfigurable { get }
+
+    /**
+     child view controllers
+     */
+    var controllers: [UIViewController] { get }
 
     /**
      setup Child Views
