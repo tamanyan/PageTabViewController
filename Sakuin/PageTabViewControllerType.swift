@@ -43,4 +43,9 @@ public protocol PageTabControllerType: class {
      Options
      */
     var options: PageTabConfigurable { get }
+
+    /**
+     setup Child Views
+     */
+    func setupChildViews()
 }

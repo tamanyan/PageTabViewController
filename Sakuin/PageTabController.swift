@@ -76,6 +76,8 @@ open class PageTabController: UIViewController {
         vc.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         vc.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         vc.view.layoutIfNeeded()
+
+        self.pageTabController?.setupChildViews()
     }
 
     required public init?(coder aDecoder: NSCoder) {

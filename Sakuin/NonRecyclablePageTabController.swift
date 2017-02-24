@@ -34,9 +34,18 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
 
     fileprivate let menuView: MenuView
 
+    fileprivate var ready: Bool = false
+
     fileprivate var currentIndex: Int = 0 {
         didSet {
+            guard ready else {
+                return
+            }
+
             self.menuView.moveTo(page: self.currentIndex)
+            if let child = self.controllers[self.currentIndex] as? Pageable {
+                child.pageTabDidMovePage(controller: self.controllers[self.currentIndex], page: self.currentIndex)
+            }
         }
     }
 
@@ -107,6 +116,9 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
 
         self.automaticallyAdjustsScrollViewInsets = false
         self.view.backgroundColor = options.backgroundColor
+    }
+
+    public func setupChildViews() {
         self.view.addSubview(self.contentScrollView)
         self.view.addSubview(self.menuView)
 
@@ -123,12 +135,12 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
             let hidingPages = self.showingPages.filter { $0 != nextPage }
             hidingPages.forEach {
                 if let child = self.controllers[$0] as? Pageable {
-                    child.pageTabWillHidePage(controller: self.controllers[$0])
+                    child.pageTabWillHidePage(controller: self.controllers[$0], page: $0)
                 }
             }
             // will show pages
             if let child = self.controllers[nextPage] as? Pageable {
-                child.pageTabWillShowPage(controller: self.controllers[nextPage])
+                child.pageTabWillShowPage(controller: self.controllers[nextPage], page: nextPage)
             }
             self.showingPages = [nextPage]
         }
@@ -137,10 +149,12 @@ class NonRecyclablePageTabController: UIViewController, PageTabControllerType {
 
         if self.currentPage < self.controllers.count {
             if let child = self.controllers[self.currentPage] as? Pageable {
-                child.pageTabWillShowPage(controller: self.controllers[self.currentPage])
+                child.pageTabWillShowPage(controller: self.controllers[self.currentPage], page: self.currentPage)
+                child.pageTabDidMovePage(controller: self.controllers[self.currentPage], page: self.currentPage)
             }
             self.showingPages.insert(self.currentPage)
         }
+        self.ready = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -291,14 +305,14 @@ extension NonRecyclablePageTabController: UIScrollViewDelegate {
         for i in nowShowingPages {
             if (intersection.contains(i) == false) {
                 if let child = self.controllers[i] as? Pageable {
-                    child.pageTabWillShowPage(controller: self.controllers[i])
+                    child.pageTabWillShowPage(controller: self.controllers[i], page: i)
                 }
             }
         }
         for i in self.showingPages {
             if (intersection.contains(i) == false) {
                 if let child = self.controllers[i] as? Pageable {
-                    child.pageTabWillHidePage(controller: self.controllers[i])
+                    child.pageTabWillHidePage(controller: self.controllers[i], page: i)
                 }
             }
         }

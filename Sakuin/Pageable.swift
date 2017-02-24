@@ -9,6 +9,13 @@
 import UIKit
 
 public protocol Pageable {
-    func pageTabWillShowPage(controller: UIViewController)
-    func pageTabWillHidePage(controller: UIViewController)
+    func pageTabWillShowPage(controller: UIViewController, page: Int)
+    func pageTabWillHidePage(controller: UIViewController, page: Int)
+    func pageTabDidMovePage(controller: UIViewController, page: Int)
+}
+
+extension Pageable where Self: UIViewController {
+    public var parentTabController: UIViewController? {
+        return self.parent?.parent
+    }
 }

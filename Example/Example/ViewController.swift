@@ -19,13 +19,18 @@ class FruitsTableViewController: UITableViewController, Pageable {
 
     // MARK: - Pageable
 
-    func pageTabWillShowPage(controller: UIViewController) {
-        print("pageTabWillShowPage \(self.fruits[0])")
+    func pageTabWillShowPage(controller: UIViewController, page: Int) {
+        print("pageTabWillShowPage \(page)")
     }
 
-    func pageTabWillHidePage(controller: UIViewController) {
-        print("pageTabWillHidePage \(self.fruits[0])")
+    func pageTabWillHidePage(controller: UIViewController, page: Int) {
+        print("pageTabWillHidePage \(page)")
     }
+
+    public func pageTabDidMovePage(controller: UIViewController, page: Int) {
+        print("pageTabDidMovePage \(page)")
+    }
+
 
     // MARK: - UITableViewDataSource
 
@@ -49,7 +54,14 @@ class FruitsTableViewController: UITableViewController, Pageable {
 }
 
 class ViewController: UITableViewController, UIGestureRecognizerDelegate {
-    let titles = ["standard + fixwidth menu", "standard + flexible width menu", "standard + flexible width bottom menu", "infinite + flexible width menu"]
+    let titles: [String] = [
+        "standard + fixwidth menu",
+        "standard + few page fixwidth menu",
+        "standard + flexible width menu",
+        "standard + flexible width bottom menu",
+        "infinite + flexible width menu"
+    ]
+
     let menuTitles: [UIColor: String] = [
         .green: "1st Green Menu",
         .gray: "2nd Gray Menu",
@@ -110,12 +122,12 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate {
             pageTabController.navigationItem.title = self.titles[indexPath.row]
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 1 {
-            let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
+            let colors: [UIColor] = [.green, .gray]
             let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
                 vc.fruits = self.items[$0]!
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
-            }), options: StandardFlexibleWidthMenuOptions())
+            }), options: StandardFixedWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 2 {
@@ -124,10 +136,19 @@ class ViewController: UITableViewController, UIGestureRecognizerDelegate {
                 let vc = FruitsTableViewController()
                 vc.fruits = self.items[$0]!
                 return (viewController: vc, menuTitle: self.menuTitles[$0]!)
-            }), options: StandardFlexibleWidthBottomMenuOptions())
+            }), options: StandardFlexibleWidthMenuOptions())
             pageTabController.navigationItem.title = self.titles[indexPath.row]
             self.showPageTabController(pageTabController)
         } else if indexPath.row == 3 {
+            let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
+            let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
+                let vc = FruitsTableViewController()
+                vc.fruits = self.items[$0]!
+                return (viewController: vc, menuTitle: self.menuTitles[$0]!)
+            }), options: StandardFlexibleWidthBottomMenuOptions())
+            pageTabController.navigationItem.title = self.titles[indexPath.row]
+            self.showPageTabController(pageTabController)
+        } else if indexPath.row == 4 {
             let colors: [UIColor] = [.green, .gray, .red, .blue, .yellow, .lightGray]
             let pageTabController = PageTabController(pageItems: colors.map({ [unowned self] in
                 let vc = FruitsTableViewController()
