@@ -24,6 +24,55 @@ open class PageTabController: UIViewController {
         return self.recyclablePageTabController ?? self.nonRecyclablePageTabController
     }
 
+    /**
+     Count of all pages
+     */
+    var pageCount: Int {
+        return self.pageTabController?.pageCount ?? 0
+    }
+
+    /**
+     current page index
+     */
+    var currentPage: Int {
+        return self.pageTabController?.currentPage ?? 0
+    }
+
+    /**
+     previous page index
+     */
+    var previousPage: Int {
+        return self.pageTabController?.previousPage ?? 0
+    }
+
+    /**
+     next page index
+     */
+    var nextPage: Int {
+        return self.pageTabController?.nextPage ?? 0
+    }
+
+    /**
+     last page index
+     */
+    var lastPage: Int {
+        return self.pageTabController?.lastPage ?? 0
+    }
+
+    /**
+     first page index
+     */
+    var firstPage: Int {
+        return self.pageTabController?.firstPage ?? 0
+    }
+
+    /**
+     Options
+     */
+    var options: PageTabConfigurable? {
+        return self.pageTabController?.options
+    }
+
     public init(pageItems: [(viewController: UIViewController, menuTitle: String)], options: PageTabConfigurable) {
         super.init(nibName: nil, bundle: nil)
 
