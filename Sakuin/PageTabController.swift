@@ -27,49 +27,49 @@ open class PageTabController: UIViewController {
     /**
      Count of all pages
      */
-    var pageCount: Int {
+    public var pageCount: Int {
         return self.pageTabController?.pageCount ?? 0
     }
 
     /**
      current page index
      */
-    var currentPage: Int {
+    public var currentPage: Int {
         return self.pageTabController?.currentPage ?? 0
     }
 
     /**
      previous page index
      */
-    var previousPage: Int {
+    public var previousPage: Int {
         return self.pageTabController?.previousPage ?? 0
     }
 
     /**
      next page index
      */
-    var nextPage: Int {
+    public var nextPage: Int {
         return self.pageTabController?.nextPage ?? 0
     }
 
     /**
      last page index
      */
-    var lastPage: Int {
+    public var lastPage: Int {
         return self.pageTabController?.lastPage ?? 0
     }
 
     /**
      first page index
      */
-    var firstPage: Int {
+    public var firstPage: Int {
         return self.pageTabController?.firstPage ?? 0
     }
 
     /**
      Options
      */
-    var options: PageTabConfigurable? {
+    public var options: PageTabConfigurable? {
         return self.pageTabController?.options
     }
 
